@@ -101,10 +101,14 @@ function generate() {
   var max = parseInt(maxInput.value, 10);
   var rawCount = parseInt(countInput.value, 10);
   var n = Math.max(1, Math.min(1000, rawCount || 1));
-  if (rawCount > 1000) showCountHint('Capped at 1000 max');
-  else if (!isNaN(rawCount) && rawCount < 1) showCountHint('Needs at least 1');
-  else showCountHint('');
-  if (String(n) !== countInput.value) countInput.value = n;
+  if (rawCount > 1000) {
+    countInput.value = 1000;
+    showCountHint('Capped at 1000 max');
+  } else if (!isNaN(rawCount) && rawCount < 1) {
+    showCountHint('Needs at least 1');
+  } else {
+    showCountHint('');
+  }
 
   if (isNaN(min) || isNaN(max) || min > max) {
     showErr('Min must be a number less than or equal to Max.');
@@ -140,6 +144,12 @@ document.getElementById('btn-copy').addEventListener('click', function (e) { cop
 minInput.addEventListener('input', generate);
 maxInput.addEventListener('input', generate);
 countInput.addEventListener('input', generate);
+countInput.addEventListener('blur', function () {
+  var raw = parseInt(countInput.value, 10);
+  var n = Math.max(1, Math.min(1000, raw || 1));
+  if (String(n) !== countInput.value) { countInput.value = n; generate(); }
+  showCountHint('');
+});
 optUnique.addEventListener('change', generate);
 generate();
 </script>

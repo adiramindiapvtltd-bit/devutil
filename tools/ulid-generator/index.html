@@ -113,10 +113,14 @@ function generate() {
   var n = raw;
   if (isNaN(n) || n < 1) n = 1;
   if (n > 1000) n = 1000;
-  if (raw > 1000) showCountHint('Capped at 1000 max');
-  else if (!isNaN(raw) && raw < 1) showCountHint('Needs at least 1');
-  else showCountHint('');
-  if (String(n) !== countInput.value) countInput.value = n;
+  if (raw > 1000) {
+    countInput.value = 1000;
+    showCountHint('Capped at 1000 max');
+  } else if (!isNaN(raw) && raw < 1) {
+    showCountHint('Needs at least 1');
+  } else {
+    showCountHint('');
+  }
   currentIds = [];
   for (var i = 0; i < n; i++) currentIds.push(ulid());
   render();
@@ -131,6 +135,14 @@ listEl.addEventListener('click', function (e) {
 document.getElementById('btn-generate').addEventListener('click', generate);
 document.getElementById('btn-copy-all').addEventListener('click', function (e) { copyToClipboard(currentIds.join('\n'), e.currentTarget); });
 countInput.addEventListener('input', generate);
+countInput.addEventListener('blur', function () {
+  var raw = parseInt(countInput.value, 10);
+  var n = raw;
+  if (isNaN(n) || n < 1) n = 1;
+  if (n > 1000) n = 1000;
+  if (String(n) !== countInput.value) { countInput.value = n; generate(); }
+  showCountHint('');
+});
 
 generate();
 </script>

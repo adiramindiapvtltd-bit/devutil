@@ -96,10 +96,14 @@ function showCountHint(msg) {
 function generate() {
   var raw = parseInt(countInput.value, 10);
   var n = Math.max(2, Math.min(12, raw || 5));
-  if (raw > 12) showCountHint('Capped at 12 colors max');
-  else if (!isNaN(raw) && raw < 2) showCountHint('Needs at least 2 colors');
-  else showCountHint('');
-  if (String(n) !== countInput.value) countInput.value = n;
+  if (raw > 12) {
+    countInput.value = 12;
+    showCountHint('Capped at 12 colors max');
+  } else if (!isNaN(raw) && raw < 2) {
+    showCountHint('Needs at least 2 colors');
+  } else {
+    showCountHint('');
+  }
   var baseHue = Math.random() * 360;
   currentColors = [];
   for (var i = 0; i < n; i++) {
@@ -126,6 +130,12 @@ paletteEl.addEventListener('click', function (e) {
 document.getElementById('btn-generate').addEventListener('click', generate);
 document.getElementById('btn-copy-all').addEventListener('click', function (e) { copyToClipboard(currentColors.join(', '), e.currentTarget); });
 countInput.addEventListener('input', generate);
+countInput.addEventListener('blur', function () {
+  var raw = parseInt(countInput.value, 10);
+  var n = Math.max(2, Math.min(12, raw || 5));
+  if (String(n) !== countInput.value) { countInput.value = n; generate(); }
+  showCountHint('');
+});
 
 generate();
 </script>
