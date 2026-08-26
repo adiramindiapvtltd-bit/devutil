@@ -12,6 +12,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DevUtil">
+<meta property="og:title" content="UUID Generator Online — Free UUID v4 Generator | DevUtil">
+<meta property="og:description" content="Generate random UUID v4 identifiers instantly in your browser. Free, no signup, generate one or many at once.">
+<meta property="og:url" content="https://devutil.adiram.net/tools/uuid-generator/">
+<meta property="og:image" content="https://devutil.adiram.net/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UUID Generator Online — Free UUID v4 Generator | DevUtil">
+<meta name="twitter:description" content="Generate random UUID v4 identifiers instantly in your browser. Free, no signup, generate one or many at once.">
+<meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"UUID Generator","url":"https://devutil.adiram.net/tools/uuid-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Generate random UUID v4 identifiers instantly in your browser. Free, no signup, generate one or many at once.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"UUID Generator","item":"https://devutil.adiram.net/tools/uuid-generator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are these UUIDs guaranteed unique?","acceptedAnswer":{"@type":"Answer","text":"UUID v4 uses 122 random bits, making collisions astronomically unlikely — safe for practically any real-world use."}},{"@type":"Question","name":"What's the difference between v4 and v7?","acceptedAnswer":{"@type":"Answer","text":"v4 is fully random. v7 embeds a millisecond timestamp in the first bits, so IDs generated later always sort after earlier ones — this gives much better database index locality than v4 when used as a primary key, while still being effectively unique."}},{"@type":"Question","name":"What's the Nil UUID for?","acceptedAnswer":{"@type":"Answer","text":"00000000-0000-0000-0000-000000000000 is the reserved \"empty\" UUID, often used as a placeholder or sentinel value meaning \"no ID\" in code and databases."}},{"@type":"Question","name":"What's the format?","acceptedAnswer":{"@type":"Answer","text":"Standard 8-4-4-4-12 hex format, e.g. f47ac10b-58cc-4372-a567-0e02b2c3d479."}},{"@type":"Question","name":"Is this cryptographically secure?","acceptedAnswer":{"@type":"Answer","text":"Yes, generation uses crypto.getRandomValues(), the browser's cryptographically secure random number generator."}}]}</script>
 </head>
 <body>
 <noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
