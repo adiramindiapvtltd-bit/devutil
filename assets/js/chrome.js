@@ -43,6 +43,7 @@
       '    <span>&copy; 2026 DevUtil</span>' +
       '    <a href="/about.html">About</a>' +
       '    <a href="/privacy.html">Privacy</a>' +
+      '    <a href="/terms.html">Terms</a>' +
       '    <a href="/contact.html">Contact</a>' +
       '  </div>' +
       '</div>';
