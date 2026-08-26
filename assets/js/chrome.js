@@ -80,7 +80,7 @@
   var areas = document.querySelectorAll('textarea:not([data-plain])');
   for (var ai = 0; ai < areas.length; ai++) {
     (function (ta) {
-      if (ta.closest('.editor') || ta.closest('.ta-wrap')) return;
+      if (ta.classList.contains('editor-textarea') || ta.closest('.ta-wrap')) return;
       var wrap = document.createElement('div');
       wrap.className = 'ta-wrap';
       var gutter = document.createElement('div');
