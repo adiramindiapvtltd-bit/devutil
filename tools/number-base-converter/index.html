@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number Base Converter Online — Binary, Octal, Decimal, Hex | DevUtil</title>
+<meta name="description" content="Free online number base converter. Convert numbers between binary, octal, decimal, and hexadecimal instantly.">
+<link rel="canonical" href="https://example.com/tools/number-base-converter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Converters">Converters</span></p>
+  <div class="page-head">
+    <h1>Number Base Converter</h1>
+    <p class="lede">Convert numbers between binary, octal, decimal, and hexadecimal.</p>
+  </div>
+
+  <div class="card tool" data-cat="Converters">
+    <div class="field"><label for="bin">Binary (base 2)</label><input type="text" id="bin" placeholder="1010"></div>
+    <div class="field"><label for="oct">Octal (base 8)</label><input type="text" id="oct" placeholder="12"></div>
+    <div class="field"><label for="dec">Decimal (base 10)</label><input type="text" id="dec" placeholder="10"></div>
+    <div class="field"><label for="hex">Hexadecimal (base 16)</label><input type="text" id="hex" placeholder="A"></div>
+    <div id="err-slot"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type a value into any field and the other three update automatically. Supports non-negative integers.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var bin = document.getElementById('bin'), oct = document.getElementById('oct'), dec = document.getElementById('dec'), hex = document.getElementById('hex');
+var errSlot = document.getElementById('err-slot');
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+
+function updateFrom(value, base, source) {
+  var n = parseInt(value, base);
+  if (value === '' ) { bin.value = oct.value = dec.value = hex.value = ''; showErr(''); return; }
+  if (isNaN(n) || n < 0) { showErr('Invalid ' + source + ' number.'); return; }
+  showErr('');
+  if (source !== 'bin') bin.value = n.toString(2);
+  if (source !== 'oct') oct.value = n.toString(8);
+  if (source !== 'dec') dec.value = n.toString(10);
+  if (source !== 'hex') hex.value = n.toString(16).toUpperCase();
+}
+
+bin.addEventListener('input', function () { updateFrom(bin.value, 2, 'bin'); });
+oct.addEventListener('input', function () { updateFrom(oct.value, 8, 'oct'); });
+dec.addEventListener('input', function () { updateFrom(dec.value, 10, 'dec'); });
+hex.addEventListener('input', function () { updateFrom(hex.value, 16, 'hex'); });
+
+updateFrom('10', 10, 'dec');
+</script>
+</body>
+</html>

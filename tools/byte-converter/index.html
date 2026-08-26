@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Byte Size Converter Online — Free | DevUtil</title>
+<meta name="description" content="Free online byte size converter. Convert between bits, bytes, KB, MB, GB, and TB instantly.">
+<link rel="canonical" href="https://example.com/tools/byte-converter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Converters">Converters</span></p>
+  <div class="page-head">
+    <h1>Byte Size Converter</h1>
+    <p class="lede">Convert between bits, bytes, KB, MB, GB, and TB.</p>
+  </div>
+
+  <div class="card tool" data-cat="Converters">
+    <div class="actions opts">
+      <label class="opt"><input type="radio" name="base" id="base1024" checked style="width:auto;"> 1024-based (KiB, MiB…)</label>
+      <label class="opt"><input type="radio" name="base" id="base1000" style="width:auto;"> 1000-based (KB, MB…)</label>
+    </div>
+    <div class="field"><label for="bits">Bits</label><input type="text" id="bits" inputmode="decimal"></div>
+    <div class="field"><label for="bytes">Bytes</label><input type="text" id="bytes" value="1" inputmode="decimal"></div>
+    <div class="field"><label for="kb">KB</label><input type="text" id="kb" inputmode="decimal"></div>
+    <div class="field"><label for="mb">MB</label><input type="text" id="mb" inputmode="decimal"></div>
+    <div class="field"><label for="gb">GB</label><input type="text" id="gb" inputmode="decimal"></div>
+    <div class="field"><label for="tb">TB</label><input type="text" id="tb" inputmode="decimal"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type a value into any field and the rest update. 1024-based matches how operating systems typically report file sizes; 1000-based matches how storage manufacturers advertise capacity.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var fields = { bits: document.getElementById('bits'), bytes: document.getElementById('bytes'), kb: document.getElementById('kb'), mb: document.getElementById('mb'), gb: document.getElementById('gb'), tb: document.getElementById('tb') };
+var base1024 = document.getElementById('base1024'), base1000 = document.getElementById('base1000');
+
+function unit() { return base1024.checked ? 1024 : 1000; }
+
+function fmt(n) {
+  if (!isFinite(n)) return '';
+  var r = Math.round(n * 1e6) / 1e6;
+  return String(r);
+}
+
+function updateFromBytes(bytes, source) {
+  var u = unit();
+  if (source !== 'bits') fields.bits.value = fmt(bytes * 8);
+  if (source !== 'bytes') fields.bytes.value = fmt(bytes);
+  if (source !== 'kb') fields.kb.value = fmt(bytes / u);
+  if (source !== 'mb') fields.mb.value = fmt(bytes / (u * u));
+  if (source !== 'gb') fields.gb.value = fmt(bytes / (u * u * u));
+  if (source !== 'tb') fields.tb.value = fmt(bytes / (u * u * u * u));
+}
+
+function bind(id, toBytes) {
+  fields[id].addEventListener('input', function () {
+    var v = parseFloat(fields[id].value);
+    if (isNaN(v)) return;
+    updateFromBytes(toBytes(v), id);
+  });
+}
+
+var u;
+bind('bits', function (v) { return v / 8; });
+bind('bytes', function (v) { return v; });
+bind('kb', function (v) { u = unit(); return v * u; });
+bind('mb', function (v) { u = unit(); return v * u * u; });
+bind('gb', function (v) { u = unit(); return v * u * u * u; });
+bind('tb', function (v) { u = unit(); return v * u * u * u * u; });
+
+base1024.addEventListener('change', function () { updateFromBytes(parseFloat(fields.bytes.value) || 0, 'bytes'); });
+base1000.addEventListener('change', function () { updateFromBytes(parseFloat(fields.bytes.value) || 0, 'bytes'); });
+
+updateFromBytes(1, 'bytes');
+</script>
+</body>
+</html>

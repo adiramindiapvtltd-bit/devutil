@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regex Tester Online — Free | DevUtil</title>
+<meta name="description" content="Free online regex tester. Test a regular expression against sample text with live matches and capture groups.">
+<link rel="canonical" href="https://example.com/tools/regex-tester/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.regex-input { display: flex; align-items: center; gap: 0; }
+.regex-input span { padding: 0 6px; color: var(--text-3); font-family: var(--mono); }
+.match-view { margin-top: 14px; padding: 12px 14px; background: var(--surface); border-radius: var(--r-sm); font-family: var(--mono); font-size: 13.5px; white-space: pre-wrap; word-break: break-word; max-height: 260px; overflow: auto; }
+.match-view mark { background: var(--hue, var(--accent)); color: #fff; border-radius: 3px; padding: 0 1px; }
+.match-list { list-style: none; margin: 12px 0 0; padding: 0; max-height: 220px; overflow: auto; }
+.match-list li { padding: 8px 10px; border-radius: 6px; background: var(--surface); margin-bottom: 6px; font-family: var(--mono); font-size: 13px; }
+.match-list .idx { color: var(--text-3); margin-right: 8px; }
+.match-list .grp { display: block; margin-top: 3px; padding-left: 20px; color: var(--text-2); font-size: 12px; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>Regex Tester</h1>
+    <p class="lede">Test a regular expression against sample text with live highlighted matches.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="field">
+      <label for="pattern">Pattern</label>
+      <div class="regex-input">
+        <span>/</span>
+        <input type="text" id="pattern" placeholder="\b[A-Z][a-z]+\b" style="flex:1;">
+        <span>/</span>
+        <input type="text" id="flags" value="g" style="width:70px;" placeholder="g">
+      </div>
+    </div>
+    <div class="field">
+      <label for="testString">Test string</label>
+      <textarea id="testString" placeholder="The Quick Brown Fox" style="min-height:120px;"></textarea>
+    </div>
+    <div id="err-slot"></div>
+    <div class="match-view" id="match-view"></div>
+    <p class="stats" id="stats"></p>
+    <ul class="match-list" id="match-list"></ul>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type a JavaScript regular expression and flags, then a test string — matches highlight live, and each match with its capture groups is listed below.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What do the flags mean?</summary><p><code>g</code> finds all matches (not just the first), <code>i</code> is case-insensitive, <code>m</code> makes <code>^</code>/<code>$</code> match line starts/ends, <code>s</code> lets <code>.</code> match newlines.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var patternInput = document.getElementById('pattern');
+var flagsInput = document.getElementById('flags');
+var testString = document.getElementById('testString');
+var errSlot = document.getElementById('err-slot');
+var matchView = document.getElementById('match-view');
+var matchList = document.getElementById('match-list');
+var statsEl = document.getElementById('stats');
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+function escapeHtml(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+function run() {
+  var pattern = patternInput.value;
+  var flags = flagsInput.value.replace(/[^gimsuy]/g, '');
+  var text = testString.value;
+
+  if (!pattern) {
+    matchView.textContent = '';
+    matchList.innerHTML = '';
+    statsEl.textContent = '';
+    showErr('');
+    return;
+  }
+
+  var re;
+  try {
+    re = new RegExp(pattern, flags.indexOf('g') === -1 ? flags + 'g' : flags);
+  } catch (e) {
+    showErr('Invalid regex: ' + e.message);
+    matchView.textContent = text;
+    matchList.innerHTML = '';
+    statsEl.textContent = '';
+    return;
+  }
+  showErr('');
+
+  var matches = [];
+  var m;
+  var lastIndex = -1;
+  while ((m = re.exec(text)) !== null) {
+    matches.push(m);
+    if (m.index === re.lastIndex) re.lastIndex++;
+    if (matches.length > 1000) break;
+  }
+
+  var html = '';
+  var pos = 0;
+  matches.forEach(function (mm) {
+    html += escapeHtml(text.slice(pos, mm.index));
+    html += '<mark>' + escapeHtml(mm[0] || '') + '</mark>';
+    pos = mm.index + mm[0].length;
+  });
+  html += escapeHtml(text.slice(pos));
+  matchView.innerHTML = html || '<span style="color:var(--text-3)">No matches</span>';
+
+  statsEl.textContent = matches.length + (matches.length === 1 ? ' match' : ' matches');
+
+  matchList.innerHTML = matches.map(function (mm, i) {
+    var groups = mm.length > 1 ? mm.slice(1).map(function (g, gi) { return '<span class="grp">Group ' + (gi + 1) + ': ' + (g === undefined ? '<em>undefined</em>' : escapeHtml(g)) + '</span>'; }).join('') : '';
+    return '<li><span class="idx">#' + (i + 1) + '</span>"' + escapeHtml(mm[0]) + '" at index ' + mm.index + groups + '</li>';
+  }).join('');
+}
+
+patternInput.addEventListener('input', run);
+flagsInput.addEventListener('input', run);
+testString.addEventListener('input', run);
+</script>
+</body>
+</html>

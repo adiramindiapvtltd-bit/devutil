@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find & Replace Online — Free | DevUtil</title>
+<meta name="description" content="Free online find and replace tool. Find and replace text, with optional regex support, instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/find-replace/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Text">Text Tools</span></p>
+  <div class="page-head">
+    <h1>Find &amp; Replace</h1>
+    <p class="lede">Find and replace text, with optional regex support.</p>
+  </div>
+
+  <div class="card tool" data-cat="Text">
+    <div class="field">
+      <label for="input">Text</label>
+      <textarea id="input" style="min-height:160px;"></textarea>
+    </div>
+    <div class="grid2">
+      <div class="field"><label for="find">Find</label><input type="text" id="find" placeholder="foo"></div>
+      <div class="field"><label for="replace">Replace with</label><input type="text" id="replace" placeholder="bar"></div>
+    </div>
+    <div class="actions opts">
+      <label class="opt"><input type="checkbox" id="opt-regex"> Use regex</label>
+      <label class="opt"><input type="checkbox" id="opt-ci"> Case-insensitive</label>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-run">Replace all</button>
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+    <div id="err-slot"></div>
+    <div class="result" id="result" hidden>
+      <div class="result-head">
+        <span class="label">Output</span>
+        <span class="stats" id="stats"></span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Enter what to find and what to replace it with, then click Replace all. Turn on "Use regex" to treat Find as a JavaScript regular expression — capture groups like <code>$1</code> work in the Replace field.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Why did my replace do nothing?</summary><p>Check that Find isn't empty, and if using regex, that the pattern is valid — an invalid pattern shows an error instead of output.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var input = document.getElementById('input');
+var findInput = document.getElementById('find');
+var replaceInput = document.getElementById('replace');
+var optRegex = document.getElementById('opt-regex');
+var optCi = document.getElementById('opt-ci');
+var output = document.getElementById('output');
+var result = document.getElementById('result');
+var statsEl = document.getElementById('stats');
+var errSlot = document.getElementById('err-slot');
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+
+function run() {
+  var text = input.value;
+  var find = findInput.value;
+  if (!find) { showErr('Enter something to find.'); result.hidden = true; return; }
+  try {
+    var flags = 'g' + (optCi.checked ? 'i' : '');
+    var pattern = optRegex.checked ? find : find.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp(pattern, flags);
+    var count = (text.match(re) || []).length;
+    output.textContent = text.replace(re, replaceInput.value);
+    statsEl.textContent = count + ' replacement' + (count === 1 ? '' : 's');
+    result.hidden = false;
+    showErr('');
+  } catch (e) {
+    result.hidden = true;
+    showErr('Invalid regex: ' + e.message);
+  }
+}
+
+document.getElementById('btn-run').addEventListener('click', run);
+document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; findInput.value = ''; replaceInput.value = ''; result.hidden = true; showErr(''); });
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+</script>
+</body>
+</html>

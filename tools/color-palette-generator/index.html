@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color Palette Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online color palette generator. Generate a random harmonious color palette instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/color-palette-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 16px; }
+.swatch { border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--line); cursor: pointer; background: none; padding: 0; text-align: left; font: inherit; }
+.swatch .fill { display: block; height: 90px; }
+.swatch .code { display: block; padding: 8px 10px; font-family: var(--mono); font-size: 12.5px; background: var(--surface); color: var(--text); }
+.swatch.done .code::after { content: " ✓"; color: var(--good); }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Generators">Generators</span></p>
+  <div class="page-head">
+    <h1>Color Palette Generator</h1>
+    <p class="lede">Generate a random harmonious color palette. Click any swatch to copy its hex code.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="actions" style="align-items:flex-end;">
+      <div class="field" style="max-width:110px;">
+        <label for="count">Colors</label>
+        <input type="text" id="count" value="5" inputmode="numeric">
+      </div>
+      <button class="btn" id="btn-generate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+        Generate
+      </button>
+      <button class="btn ghost" id="btn-copy-all">Copy all</button>
+    </div>
+    <div class="palette" id="palette"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Colors are spaced evenly around the color wheel from a random starting hue, with saturation and lightness kept in a pleasant range, so each palette feels cohesive rather than random noise.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Can I copy a single color?</summary><p>Yes, click any swatch to copy its hex code to your clipboard.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+function hslToHex(h, s, l) {
+  s /= 100; l /= 100;
+  var c = (1 - Math.abs(2 * l - 1)) * s;
+  var x = c * (1 - Math.abs((h / 60) % 2 - 1));
+  var m = l - c / 2;
+  var r, g, b;
+  if (h < 60) { r = c; g = x; b = 0; }
+  else if (h < 120) { r = x; g = c; b = 0; }
+  else if (h < 180) { r = 0; g = c; b = x; }
+  else if (h < 240) { r = 0; g = x; b = c; }
+  else if (h < 300) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  r = Math.round((r + m) * 255); g = Math.round((g + m) * 255); b = Math.round((b + m) * 255);
+  return '#' + [r, g, b].map(function (v) { return v.toString(16).padStart(2, '0'); }).join('');
+}
+
+var paletteEl = document.getElementById('palette');
+var countInput = document.getElementById('count');
+var currentColors = [];
+
+function generate() {
+  var n = Math.max(2, Math.min(12, parseInt(countInput.value, 10) || 5));
+  var baseHue = Math.random() * 360;
+  currentColors = [];
+  for (var i = 0; i < n; i++) {
+    var hue = (baseHue + i * (360 / n) + (Math.random() * 16 - 8) + 360) % 360;
+    var sat = 55 + Math.random() * 30;
+    var light = 42 + Math.random() * 22;
+    currentColors.push(hslToHex(hue, sat, light));
+  }
+  render();
+}
+
+function render() {
+  paletteEl.innerHTML = currentColors.map(function (hex) {
+    return '<button class="swatch" data-hex="' + hex + '" type="button"><span class="fill" style="background:' + hex + '"></span><span class="code">' + hex + '</span></button>';
+  }).join('');
+}
+
+paletteEl.addEventListener('click', function (e) {
+  var btn = e.target.closest('.swatch');
+  if (!btn) return;
+  copyToClipboard(btn.getAttribute('data-hex'), btn);
+});
+
+document.getElementById('btn-generate').addEventListener('click', generate);
+document.getElementById('btn-copy-all').addEventListener('click', function (e) { copyToClipboard(currentColors.join(', '), e.currentTarget); });
+
+generate();
+</script>
+</body>
+</html>

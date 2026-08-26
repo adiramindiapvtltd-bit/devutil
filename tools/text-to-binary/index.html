@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text to Binary / ASCII Converter Online — Free | DevUtil</title>
+<meta name="description" content="Free online text to binary and ASCII converter. Convert text to binary or decimal ASCII codes and back.">
+<link rel="canonical" href="https://example.com/tools/text-to-binary/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Converters">Converters</span></p>
+  <div class="page-head">
+    <h1>Text to Binary / ASCII</h1>
+    <p class="lede">Convert text to binary or decimal ASCII codes, and back.</p>
+  </div>
+
+  <div class="card tool" data-cat="Converters">
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-encode" role="tab" aria-selected="true">Encode</button>
+      <button class="tab" id="tab-decode" role="tab" aria-selected="false">Decode</button>
+    </div>
+    <div class="actions opts">
+      <label class="opt"><input type="radio" name="fmt" id="fmt-bin" checked style="width:auto;"> Binary</label>
+      <label class="opt"><input type="radio" name="fmt" id="fmt-dec" style="width:auto;"> Decimal (ASCII codes)</label>
+    </div>
+    <div class="field">
+      <label for="input" id="input-label">Plain text</label>
+      <textarea id="input" placeholder="Hi"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+    <div id="err-slot"></div>
+    <div class="result" id="result" hidden>
+      <div class="result-head">
+        <span class="label">Output</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Switch between Encode and Decode, and pick Binary (8 bits per byte) or Decimal (0–255 ASCII/UTF-8 byte values), space-separated.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var mode = 'encode';
+var input = document.getElementById('input');
+var output = document.getElementById('output');
+var result = document.getElementById('result');
+var errSlot = document.getElementById('err-slot');
+var tabEncode = document.getElementById('tab-encode');
+var tabDecode = document.getElementById('tab-decode');
+var inputLabel = document.getElementById('input-label');
+var fmtBin = document.getElementById('fmt-bin');
+var fmtDec = document.getElementById('fmt-dec');
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+
+function run() {
+  var val = input.value;
+  if (!val.trim()) { result.hidden = true; showErr(''); return; }
+  var binary = fmtBin.checked;
+  try {
+    if (mode === 'encode') {
+      var bytes = new TextEncoder().encode(val);
+      output.textContent = binary
+        ? Array.prototype.map.call(bytes, function (b) { return b.toString(2).padStart(8, '0'); }).join(' ')
+        : Array.prototype.join.call(bytes, ' ');
+    } else {
+      var groups = val.trim().split(/\s+/);
+      var arr;
+      if (binary) {
+        arr = groups.map(function (g) {
+          if (!/^[01]{1,8}$/.test(g)) throw new Error('Invalid binary byte: "' + g + '"');
+          return parseInt(g, 2);
+        });
+      } else {
+        arr = groups.map(function (g) {
+          var n = Number(g);
+          if (isNaN(n) || n < 0 || n > 255) throw new Error('Invalid byte value: "' + g + '" (must be 0-255)');
+          return n;
+        });
+      }
+      output.textContent = new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(arr));
+    }
+    result.hidden = false;
+    showErr('');
+  } catch (e) {
+    result.hidden = true;
+    showErr(e.message);
+  }
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  tabEncode.setAttribute('aria-selected', mode === 'encode' ? 'true' : 'false');
+  tabDecode.setAttribute('aria-selected', mode === 'decode' ? 'true' : 'false');
+  inputLabel.textContent = mode === 'encode' ? 'Plain text' : 'Binary or decimal bytes';
+  input.placeholder = mode === 'encode' ? 'Hi' : '01001000 01101001';
+  run();
+}
+
+tabEncode.addEventListener('click', function () { setMode('encode'); });
+tabDecode.addEventListener('click', function () { setMode('decode'); });
+input.addEventListener('input', run);
+fmtBin.addEventListener('change', run);
+fmtDec.addEventListener('change', run);
+document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; showErr(''); });
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+</script>
+</body>
+</html>

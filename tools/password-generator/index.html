@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Password Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online password generator. Create strong, random passwords with custom length and character rules.">
+<link rel="canonical" href="https://example.com/tools/password-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Generators">Generators</span></p>
+  <div class="page-head">
+    <h1>Password Generator</h1>
+    <p class="lede">Generate strong random passwords with custom rules. Runs entirely in your browser using a cryptographically secure random source.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="result" id="result" style="margin-top:0;">
+      <div class="result-head">
+        <span class="label">Password</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output" style="font-size:18px; letter-spacing: .03em;"></pre>
+    </div>
+
+    <div class="field">
+      <label for="length">Length: <span id="length-val">16</span></label>
+      <input type="range" id="length" min="6" max="64" value="16" style="width:100%;">
+    </div>
+
+    <div class="actions opts">
+      <label class="opt"><input type="checkbox" id="opt-upper" checked> Uppercase (A-Z)</label>
+      <label class="opt"><input type="checkbox" id="opt-lower" checked> Lowercase (a-z)</label>
+      <label class="opt"><input type="checkbox" id="opt-numbers" checked> Numbers (0-9)</label>
+      <label class="opt"><input type="checkbox" id="opt-symbols"> Symbols (!@#$…)</label>
+      <label class="opt"><input type="checkbox" id="opt-ambiguous"> Exclude ambiguous (l1IO0)</label>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btn-generate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+        Regenerate
+      </button>
+    </div>
+    <div id="err-slot"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Adjust length and which character sets to include, then click Regenerate for a new password. At least one character set must stay checked.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Is this secure enough for real passwords?</summary><p>Yes — it uses <code>crypto.getRandomValues()</code>, the same cryptographically secure random source used for keys and tokens, not <code>Math.random()</code>.</p></details>
+        <details class="faq"><summary>Is my password sent anywhere?</summary><p>No. It's generated and displayed entirely in your browser and never transmitted.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var output = document.getElementById('output');
+var lengthInput = document.getElementById('length');
+var lengthVal = document.getElementById('length-val');
+var optUpper = document.getElementById('opt-upper');
+var optLower = document.getElementById('opt-lower');
+var optNumbers = document.getElementById('opt-numbers');
+var optSymbols = document.getElementById('opt-symbols');
+var optAmbiguous = document.getElementById('opt-ambiguous');
+var errSlot = document.getElementById('err-slot');
+
+var SETS = {
+  upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  lower: 'abcdefghijklmnopqrstuvwxyz',
+  numbers: '0123456789',
+  symbols: '!@#$%^&*()-_=+[]{};:,.<>?'
+};
+var AMBIGUOUS = /[l1IO0]/;
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+
+function generate() {
+  var pool = '';
+  if (optUpper.checked) pool += SETS.upper;
+  if (optLower.checked) pool += SETS.lower;
+  if (optNumbers.checked) pool += SETS.numbers;
+  if (optSymbols.checked) pool += SETS.symbols;
+  if (optAmbiguous.checked) pool = pool.split('').filter(function (c) { return !AMBIGUOUS.test(c); }).join('');
+
+  if (!pool) {
+    showErr('Select at least one character set.');
+    output.textContent = '';
+    return;
+  }
+  showErr('');
+  var len = parseInt(lengthInput.value, 10);
+  var bytes = new Uint32Array(len);
+  crypto.getRandomValues(bytes);
+  var pw = '';
+  for (var i = 0; i < len; i++) pw += pool[bytes[i] % pool.length];
+  output.textContent = pw;
+}
+
+lengthInput.addEventListener('input', function () { lengthVal.textContent = lengthInput.value; generate(); });
+[optUpper, optLower, optNumbers, optSymbols, optAmbiguous].forEach(function (el) {
+  el.addEventListener('change', generate);
+});
+document.getElementById('btn-generate').addEventListener('click', generate);
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+
+generate();
+</script>
+</body>
+</html>

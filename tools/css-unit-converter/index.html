@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Unit Converter Online — px, rem, em, pt | DevUtil</title>
+<meta name="description" content="Free online CSS unit converter. Convert between px, rem, em, and pt instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/css-unit-converter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>CSS Unit Converter</h1>
+    <p class="lede">Convert between px, rem, em, and pt.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="field" style="max-width:160px;">
+      <label for="base">Base font size (px)</label>
+      <input type="text" id="base" value="16" inputmode="numeric">
+    </div>
+    <div class="grid2" style="margin-top:8px;">
+      <div class="field"><label for="px">Pixels (px)</label><input type="text" id="px" value="16" inputmode="decimal"></div>
+      <div class="field"><label for="rem">Rem</label><input type="text" id="rem" value="1" inputmode="decimal"></div>
+      <div class="field"><label for="em">Em</label><input type="text" id="em" value="1" inputmode="decimal"></div>
+      <div class="field"><label for="pt">Points (pt)</label><input type="text" id="pt" value="12" inputmode="decimal"></div>
+    </div>
+    <p class="stats">Rem and em use the base font size above (browser default is 16px). Points assume 96 CSS px per inch.</p>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Edit any field and the others update automatically, based on the base font size. rem is always relative to the root element's font size; em here is treated the same way for simplicity (in real CSS, em can compound based on nested font sizes).</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var base = document.getElementById('base');
+var px = document.getElementById('px'), rem = document.getElementById('rem'), em = document.getElementById('em'), pt = document.getElementById('pt');
+
+function fromPx(pxVal) {
+  var b = parseFloat(base.value) || 16;
+  rem.value = (pxVal / b).toFixed(4).replace(/\.?0+$/, '');
+  em.value = (pxVal / b).toFixed(4).replace(/\.?0+$/, '');
+  pt.value = (pxVal * 0.75).toFixed(4).replace(/\.?0+$/, '');
+}
+
+px.addEventListener('input', function () { var v = parseFloat(px.value); if (!isNaN(v)) fromPx(v); });
+rem.addEventListener('input', function () { var v = parseFloat(rem.value); var b = parseFloat(base.value) || 16; if (!isNaN(v)) { px.value = (v * b).toFixed(4).replace(/\.?0+$/, ''); fromPx(v * b); } });
+em.addEventListener('input', function () { var v = parseFloat(em.value); var b = parseFloat(base.value) || 16; if (!isNaN(v)) { px.value = (v * b).toFixed(4).replace(/\.?0+$/, ''); fromPx(v * b); } });
+pt.addEventListener('input', function () { var v = parseFloat(pt.value); if (!isNaN(v)) { var p = v / 0.75; px.value = p.toFixed(4).replace(/\.?0+$/, ''); fromPx(p); } });
+base.addEventListener('input', function () { var v = parseFloat(px.value); if (!isNaN(v)) fromPx(v); });
+</script>
+</body>
+</html>

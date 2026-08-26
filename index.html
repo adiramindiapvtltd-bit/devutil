@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DevUtil — 53 Free Online Developer Tools</title>
+<meta name="description" content="Free, fast, browser-based developer tools: formatters, encoders, generators, text tools, CSS helpers, and converters. No signup, nothing leaves your browser.">
+<link rel="canonical" href="https://example.com/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">These tools run in your browser — please enable JavaScript to use them.</div></noscript>
+
+<a class="skip" href="#main">Skip to the tools</a>
+
+<div id="site-header"></div>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="search" id="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder='Search — try "json", "regex", "csv"…' autocomplete="off" spellcheck="false" aria-label="Search tools">
+      <button type="button" class="clear-btn" id="clearq" aria-label="Clear search" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p class="search-count" id="count" hidden></p>
+  </div>
+</section>
+
+<main id="main" class="wrap page">
+  <h1 id="all" class="page-title">All tools</h1>
+
+  <div id="tool-cats"></div>
+
+  <p class="no-results" id="noresults" hidden>No tool matches that.</p>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/search.js"></script>
+</body>
+</html>

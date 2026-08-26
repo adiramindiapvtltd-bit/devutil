@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contrast Checker Online — WCAG Color Contrast | DevUtil</title>
+<meta name="description" content="Free online WCAG contrast checker. Check color contrast between two colors against AA and AAA standards.">
+<link rel="canonical" href="https://example.com/tools/contrast-checker/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.contrast-preview { margin-top: 16px; padding: 30px; border-radius: var(--r); text-align: center; }
+.contrast-preview .big { font-size: 28px; font-weight: 700; }
+.contrast-preview .small { font-size: 15px; margin-top: 6px; }
+.ratio-display { text-align: center; margin-top: 14px; }
+.ratio-display .num { font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pass-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 14px; }
+.pass-tile { padding: 10px; border-radius: var(--r-sm); background: var(--surface); text-align: center; font-size: 13px; }
+.pass-tile .status { display: block; margin-top: 4px; font-weight: 700; }
+.pass-tile.pass .status { color: var(--good); }
+.pass-tile.fail .status { color: var(--bad); }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>Contrast Checker</h1>
+    <p class="lede">Check WCAG color contrast between text and background colors.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="actions" style="align-items:center;">
+      <label style="font-size:13px; color:var(--text-3);">Text</label>
+      <input type="color" id="fg" value="#0a0b0d">
+      <label style="font-size:13px; color:var(--text-3);">Background</label>
+      <input type="color" id="bg" value="#ffffff">
+    </div>
+
+    <div class="contrast-preview" id="preview">
+      <div class="big">Large text example</div>
+      <div class="small">Normal-size body text example</div>
+    </div>
+
+    <div class="ratio-display">
+      <span class="num" id="ratio">21.00</span><span style="color:var(--text-3);">:1</span>
+    </div>
+
+    <div class="pass-grid">
+      <div class="pass-tile" id="aa-normal"><span>AA — Normal text</span><span class="status"></span></div>
+      <div class="pass-tile" id="aa-large"><span>AA — Large text</span><span class="status"></span></div>
+      <div class="pass-tile" id="aaa-normal"><span>AAA — Normal text</span><span class="status"></span></div>
+      <div class="pass-tile" id="aaa-large"><span>AAA — Large text</span><span class="status"></span></div>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Pick a text color and background color. The contrast ratio is calculated using the WCAG relative luminance formula. AA is the standard minimum for accessible web text; AAA is a stricter enhanced standard. "Large text" means 18pt+ (or 14pt+ bold).</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What ratio do I need?</summary><p>AA requires 4.5:1 for normal text and 3:1 for large text. AAA requires 7:1 and 4.5:1 respectively.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var fg = document.getElementById('fg'), bg = document.getElementById('bg');
+var preview = document.getElementById('preview');
+var ratioEl = document.getElementById('ratio');
+var tiles = {
+  'aa-normal': { min: 4.5, el: document.getElementById('aa-normal') },
+  'aa-large': { min: 3, el: document.getElementById('aa-large') },
+  'aaa-normal': { min: 7, el: document.getElementById('aaa-normal') },
+  'aaa-large': { min: 4.5, el: document.getElementById('aaa-large') }
+};
+
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  var num = parseInt(hex, 16);
+  return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+}
+function luminance(r, g, b) {
+  var a = [r, g, b].map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+function contrastRatio(c1, c2) {
+  var l1 = luminance.apply(null, c1), l2 = luminance.apply(null, c2);
+  var lighter = Math.max(l1, l2), darker = Math.min(l1, l2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function run() {
+  preview.style.color = fg.value;
+  preview.style.background = bg.value;
+  var ratio = contrastRatio(hexToRgb(fg.value), hexToRgb(bg.value));
+  ratioEl.textContent = ratio.toFixed(2);
+  Object.keys(tiles).forEach(function (key) {
+    var t = tiles[key];
+    var pass = ratio >= t.min;
+    t.el.className = 'pass-tile ' + (pass ? 'pass' : 'fail');
+    t.el.querySelector('.status').textContent = pass ? 'Pass' : 'Fail';
+  });
+}
+
+fg.addEventListener('input', run);
+bg.addEventListener('input', run);
+run();
+</script>
+</body>
+</html>

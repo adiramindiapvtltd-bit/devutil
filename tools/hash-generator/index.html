@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hash Generator Online — MD5, SHA-1, SHA-256 | DevUtil</title>
+<meta name="description" content="Free online hash generator. Generate MD5, SHA-1, and SHA-256 hashes of text instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/hash-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Generators">Generators</span></p>
+  <div class="page-head">
+    <h1>Hash Generator</h1>
+    <p class="lede">Generate MD5, SHA-1, and SHA-256 hashes of text. Runs entirely in your browser.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="field">
+      <label for="input">Input</label>
+      <textarea id="input" placeholder="Type or paste text here" style="min-height:100px;"></textarea>
+    </div>
+
+    <div id="hashes">
+      <div class="result" style="margin-top:16px;">
+        <div class="result-head"><span class="label">MD5</span><div class="result-tools"><button class="copy-btn" data-target="md5" type="button" aria-label="Copy MD5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div></div>
+        <pre class="code-block" id="md5" style="margin-top:8px;"></pre>
+      </div>
+      <div class="result">
+        <div class="result-head"><span class="label">SHA-1</span><div class="result-tools"><button class="copy-btn" data-target="sha1" type="button" aria-label="Copy SHA-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div></div>
+        <pre class="code-block" id="sha1" style="margin-top:8px;"></pre>
+      </div>
+      <div class="result">
+        <div class="result-head"><span class="label">SHA-256</span><div class="result-tools"><button class="copy-btn" data-target="sha256" type="button" aria-label="Copy SHA-256"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div></div>
+        <pre class="code-block" id="sha256" style="margin-top:8px;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type or paste text and all three hashes update live. SHA-1 and SHA-256 use the browser's built-in Web Crypto API; MD5 uses a JavaScript implementation since it isn't part of that API.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Is MD5 or SHA-1 safe to use?</summary><p>No — both are cryptographically broken for security purposes (password hashing, signatures). They're included here for checksums and legacy compatibility, not for protecting sensitive data.</p></details>
+        <details class="faq"><summary>Is my text uploaded anywhere?</summary><p>No. All hashing happens locally in your browser.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+function md5(str) {
+  function rotl(x, n) { return (x << n) | (x >>> (32 - n)); }
+  var K = [];
+  for (var i = 0; i < 64; i++) K[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) | 0;
+  var S = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
+           5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
+           4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
+           6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
+  var msg = new TextEncoder().encode(str);
+  var origLenBits = msg.length * 8;
+  var withOne = new Uint8Array(((msg.length + 8) >> 6) * 64 + 64);
+  withOne.set(msg);
+  withOne[msg.length] = 0x80;
+  var totalLen = withOne.length;
+  var dv = new DataView(withOne.buffer);
+  dv.setUint32(totalLen - 8, origLenBits >>> 0, true);
+  dv.setUint32(totalLen - 4, Math.floor(origLenBits / 4294967296), true);
+  var a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+  for (var cs = 0; cs < totalLen; cs += 64) {
+    var M = [];
+    for (var j = 0; j < 16; j++) M[j] = dv.getUint32(cs + j * 4, true);
+    var A = a0, B = b0, C = c0, D = d0;
+    for (var i2 = 0; i2 < 64; i2++) {
+      var F, g;
+      if (i2 < 16) { F = (B & C) | (~B & D); g = i2; }
+      else if (i2 < 32) { F = (D & B) | (~D & C); g = (5 * i2 + 1) % 16; }
+      else if (i2 < 48) { F = B ^ C ^ D; g = (3 * i2 + 5) % 16; }
+      else { F = C ^ (B | ~D); g = (7 * i2) % 16; }
+      F = (F + A + K[i2] + M[g]) | 0;
+      A = D; D = C; C = B;
+      B = (B + rotl(F, S[i2])) | 0;
+    }
+    a0 = (a0 + A) | 0; b0 = (b0 + B) | 0; c0 = (c0 + C) | 0; d0 = (d0 + D) | 0;
+  }
+  function toHexLE(n) {
+    var bytes = [n & 0xff, (n >>> 8) & 0xff, (n >>> 16) & 0xff, (n >>> 24) & 0xff];
+    return bytes.map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+  }
+  return toHexLE(a0) + toHexLE(b0) + toHexLE(c0) + toHexLE(d0);
+}
+
+async function subtleHash(algo, str) {
+  var buf = await crypto.subtle.digest(algo, new TextEncoder().encode(str));
+  return Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+var input = document.getElementById('input');
+var out = { md5: document.getElementById('md5'), sha1: document.getElementById('sha1'), sha256: document.getElementById('sha256') };
+
+async function run() {
+  var val = input.value;
+  if (!val) { out.md5.textContent = out.sha1.textContent = out.sha256.textContent = ''; return; }
+  out.md5.textContent = md5(val);
+  out.sha1.textContent = await subtleHash('SHA-1', val);
+  out.sha256.textContent = await subtleHash('SHA-256', val);
+}
+
+input.addEventListener('input', run);
+document.getElementById('hashes').addEventListener('click', function (e) {
+  var btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  var target = out[btn.getAttribute('data-target')];
+  copyToClipboard(target.textContent, btn);
+});
+</script>
+</body>
+</html>

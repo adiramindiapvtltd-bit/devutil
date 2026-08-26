@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text Diff Checker Online — Free | DevUtil</title>
+<meta name="description" content="Free online text diff checker. Compare two blocks of text and highlight the line-by-line differences.">
+<link rel="canonical" href="https://example.com/tools/text-diff/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.diff-view { margin-top: 14px; padding: 4px 0; background: var(--surface); border-radius: var(--r-sm); overflow: auto; max-height: 420px; font-family: var(--mono); font-size: 13px; }
+.diff-line { display: flex; padding: 1px 12px; white-space: pre-wrap; word-break: break-word; }
+.diff-line.added { background: color-mix(in srgb, var(--good) 14%, transparent); }
+.diff-line.removed { background: color-mix(in srgb, var(--bad) 14%, transparent); }
+.diff-line .marker { flex: none; width: 18px; opacity: .7; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Text">Text Tools</span></p>
+  <div class="page-head">
+    <h1>Text Diff Checker</h1>
+    <p class="lede">Compare two blocks of text and see line-by-line differences.</p>
+  </div>
+
+  <div class="card tool" data-cat="Text">
+    <div class="grid2">
+      <div class="field"><label for="input-a">Original</label><textarea id="input-a" style="min-height:160px;"></textarea></div>
+      <div class="field"><label for="input-b">Changed</label><textarea id="input-b" style="min-height:160px;"></textarea></div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-compare">Compare</button>
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+    <div class="diff-view" id="diff-view" hidden></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Paste the original text on the left and the changed version on the right, then click Compare. Removed lines are highlighted in red, added lines in green, unchanged lines are shown plainly.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Does this diff word-by-word?</summary><p>No, it compares line by line — a single changed word will mark the whole line as removed and re-added.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var inputA = document.getElementById('input-a');
+var inputB = document.getElementById('input-b');
+var diffView = document.getElementById('diff-view');
+
+function diffLines(a, b) {
+  var linesA = a.split('\n'), linesB = b.split('\n');
+  var n = linesA.length, m = linesB.length;
+  var dp = [];
+  for (var i = 0; i <= n; i++) dp.push(new Array(m + 1).fill(0));
+  for (i = n - 1; i >= 0; i--) {
+    for (var j = m - 1; j >= 0; j--) {
+      dp[i][j] = linesA[i] === linesB[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  var result = [];
+  i = 0; var jj = 0;
+  while (i < n && jj < m) {
+    if (linesA[i] === linesB[jj]) { result.push({ type: 'same', text: linesA[i] }); i++; jj++; }
+    else if (dp[i + 1][jj] >= dp[i][jj + 1]) { result.push({ type: 'removed', text: linesA[i] }); i++; }
+    else { result.push({ type: 'added', text: linesB[jj] }); jj++; }
+  }
+  while (i < n) { result.push({ type: 'removed', text: linesA[i] }); i++; }
+  while (jj < m) { result.push({ type: 'added', text: linesB[jj] }); jj++; }
+  return result;
+}
+
+function escapeHtml(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+function compare() {
+  var diff = diffLines(inputA.value, inputB.value);
+  diffView.innerHTML = diff.map(function (d) {
+    var marker = d.type === 'added' ? '+' : d.type === 'removed' ? '-' : ' ';
+    return '<div class="diff-line ' + d.type + '"><span class="marker">' + marker + '</span><span>' + (escapeHtml(d.text) || ' ') + '</span></div>';
+  }).join('');
+  diffView.hidden = false;
+}
+
+document.getElementById('btn-compare').addEventListener('click', compare);
+document.getElementById('btn-clear').addEventListener('click', function () {
+  inputA.value = ''; inputB.value = ''; diffView.hidden = true; diffView.innerHTML = '';
+});
+</script>
+</body>
+</html>

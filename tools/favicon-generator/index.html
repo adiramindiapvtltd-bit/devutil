@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online favicon generator. Resize an uploaded image into standard favicon sizes and download each one.">
+<link rel="canonical" href="https://example.com/tools/favicon-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.drop-zone { margin-top: 14px; padding: 28px; border: 2px dashed var(--line-strong); border-radius: var(--r); text-align: center; color: var(--text-3); cursor: pointer; }
+.drop-zone:hover { border-color: var(--hue, var(--accent)); }
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-top: 16px; }
+.icon-tile { padding: 12px; background: var(--surface); border-radius: var(--r-sm); text-align: center; }
+.icon-tile canvas, .icon-tile img { max-width: 100%; image-rendering: pixelated; background: repeating-conic-gradient(#8883 0% 25%, transparent 0% 50%) 50% / 12px 12px; border-radius: 4px; }
+.icon-tile .label { display: block; margin-top: 8px; font-size: 12px; color: var(--text-3); }
+.icon-tile button { margin-top: 6px; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>Favicon Generator</h1>
+    <p class="lede">Upload a square image and get it resized into standard favicon sizes, ready to download.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="drop-zone" id="drop-zone">
+      <p>Click to choose an image, or drag one here</p>
+      <p style="font-size:12px;">A square image (e.g. 512×512) works best</p>
+    </div>
+    <input type="file" id="file-input" accept="image/*" hidden>
+    <div class="icon-grid" id="icon-grid" hidden></div>
+    <div class="result" id="snippet-result" hidden style="margin-top:14px;">
+      <div class="result-head">
+        <span class="label">HTML snippet</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy snippet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="snippet"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Upload an image and it's resized to 16×16, 32×32, 48×48, 180×180 (Apple touch icon), 192×192, and 512×512 using the browser's canvas — download each size individually, then paste the HTML snippet into your page's <code>&lt;head&gt;</code>.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Is my image uploaded anywhere?</summary><p>No. Resizing happens locally in your browser using the Canvas API — the image is never sent to a server.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var dropZone = document.getElementById('drop-zone');
+var fileInput = document.getElementById('file-input');
+var iconGrid = document.getElementById('icon-grid');
+var snippetResult = document.getElementById('snippet-result');
+var snippet = document.getElementById('snippet');
+
+var SIZES = [16, 32, 48, 180, 192, 512];
+
+function handleFile(file) {
+  if (!file || file.type.indexOf('image/') !== 0) return;
+  var img = new Image();
+  img.onload = function () {
+    iconGrid.hidden = false;
+    iconGrid.innerHTML = '';
+    SIZES.forEach(function (size) {
+      var canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, size, size);
+      var tile = document.createElement('div');
+      tile.className = 'icon-tile';
+      var displaySize = Math.min(size, 96);
+      canvas.style.width = displaySize + 'px';
+      canvas.style.height = displaySize + 'px';
+      var label = document.createElement('span');
+      label.className = 'label';
+      label.textContent = size + '×' + size;
+      var btn = document.createElement('button');
+      btn.className = 'btn ghost btn-sm';
+      btn.textContent = 'Download';
+      btn.addEventListener('click', function () {
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'favicon-' + size + '.png';
+        a.click();
+      });
+      tile.appendChild(canvas);
+      tile.appendChild(label);
+      tile.appendChild(btn);
+      iconGrid.appendChild(tile);
+    });
+
+    snippet.textContent =
+      '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">\n' +
+      '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">\n' +
+      '<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">\n' +
+      '<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">\n' +
+      '<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">';
+    snippetResult.hidden = false;
+  };
+  img.src = URL.createObjectURL(file);
+}
+
+dropZone.addEventListener('click', function () { fileInput.click(); });
+fileInput.addEventListener('change', function () { handleFile(fileInput.files[0]); });
+dropZone.addEventListener('dragover', function (e) { e.preventDefault(); });
+dropZone.addEventListener('drop', function (e) {
+  e.preventDefault();
+  handleFile(e.dataTransfer.files[0]);
+});
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(snippet.textContent, e.currentTarget); });
+</script>
+</body>
+</html>

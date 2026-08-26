@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Gradient Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online CSS gradient generator. Build a linear or radial gradient visually and copy the CSS.">
+<link rel="canonical" href="https://example.com/tools/css-gradient-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.gradient-preview { height: 180px; border-radius: var(--r); margin-top: 14px; border: 1px solid var(--line); }
+.color-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.color-row input[type="text"] { max-width: 120px; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>CSS Gradient Generator</h1>
+    <p class="lede">Build a linear or radial gradient visually, then copy the CSS.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="actions" style="align-items:flex-end;">
+      <div class="field" style="max-width:140px;">
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="linear">Linear</option>
+          <option value="radial">Radial</option>
+        </select>
+      </div>
+      <div class="field" id="angle-field" style="max-width:160px;">
+        <label for="angle">Angle: <span id="angle-val">90</span>&deg;</label>
+        <input type="range" id="angle" min="0" max="360" value="90">
+      </div>
+    </div>
+
+    <div class="color-row">
+      <input type="color" id="color1" value="#4f46e5">
+      <input type="text" id="hex1" value="#4f46e5">
+      <label style="font-size:13px; color:var(--text-3);">Stop 1 at <span id="stop1-val">0</span>%</label>
+      <input type="range" id="stop1" min="0" max="100" value="0" style="max-width:120px;">
+    </div>
+    <div class="color-row">
+      <input type="color" id="color2" value="#06b6d4">
+      <input type="text" id="hex2" value="#06b6d4">
+      <label style="font-size:13px; color:var(--text-3);">Stop 2 at <span id="stop2-val">100</span>%</label>
+      <input type="range" id="stop2" min="0" max="100" value="100" style="max-width:120px;">
+    </div>
+
+    <div class="gradient-preview" id="preview"></div>
+
+    <div class="result" style="margin-top:14px;">
+      <div class="result-head">
+        <span class="label">CSS</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy CSS">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Pick a type, two colors, and where each color stop sits along the gradient. The preview and CSS update live — copy the CSS straight into a <code>background</code> property.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var type = document.getElementById('type');
+var angle = document.getElementById('angle');
+var angleVal = document.getElementById('angle-val');
+var angleField = document.getElementById('angle-field');
+var color1 = document.getElementById('color1'), hex1 = document.getElementById('hex1');
+var color2 = document.getElementById('color2'), hex2 = document.getElementById('hex2');
+var stop1 = document.getElementById('stop1'), stop1Val = document.getElementById('stop1-val');
+var stop2 = document.getElementById('stop2'), stop2Val = document.getElementById('stop2-val');
+var preview = document.getElementById('preview');
+var output = document.getElementById('output');
+
+function run() {
+  angleField.style.display = type.value === 'linear' ? '' : 'none';
+  angleVal.textContent = angle.value;
+  stop1Val.textContent = stop1.value;
+  stop2Val.textContent = stop2.value;
+
+  var css = type.value === 'linear'
+    ? 'linear-gradient(' + angle.value + 'deg, ' + color1.value + ' ' + stop1.value + '%, ' + color2.value + ' ' + stop2.value + '%)'
+    : 'radial-gradient(circle, ' + color1.value + ' ' + stop1.value + '%, ' + color2.value + ' ' + stop2.value + '%)';
+
+  preview.style.background = css;
+  output.textContent = 'background: ' + css + ';';
+}
+
+color1.addEventListener('input', function () { hex1.value = color1.value; run(); });
+color2.addEventListener('input', function () { hex2.value = color2.value; run(); });
+hex1.addEventListener('input', function () { if (/^#[0-9a-fA-F]{6}$/.test(hex1.value)) { color1.value = hex1.value; run(); } });
+hex2.addEventListener('input', function () { if (/^#[0-9a-fA-F]{6}$/.test(hex2.value)) { color2.value = hex2.value; run(); } });
+[type, angle, stop1, stop2].forEach(function (el) { el.addEventListener('input', run); });
+
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+run();
+</script>
+</body>
+</html>

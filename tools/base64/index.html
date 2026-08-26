@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Base64 Encoder &amp; Decoder Online — Free, No Signup | DevUtil</title>
+<meta name="description" content="Free online Base64 encoder and decoder. Convert text to Base64 or decode Base64 back to text instantly in your browser. No signup required.">
+<link rel="canonical" href="https://example.com/tools/base64/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+
+<a class="skip" href="#main">Skip to the tool</a>
+
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs">
+    <a href="/">All tools</a>
+    <span class="sep">/</span>
+    <span class="cat-tag" data-cat="Encoding">Encoding</span>
+  </p>
+
+  <div class="page-head">
+    <h1>Base64 Encoder &amp; Decoder</h1>
+    <p class="lede">Convert text to Base64 or decode Base64 back to plain text. Runs entirely in your browser.</p>
+  </div>
+
+  <div class="card tool" data-cat="Encoding">
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-encode" role="tab" aria-selected="true">Encode</button>
+      <button class="tab" id="tab-decode" role="tab" aria-selected="false">Decode</button>
+    </div>
+
+    <div class="field">
+      <label for="input" id="input-label">Plain text</label>
+      <textarea id="input" placeholder="Type or paste text here"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" id="btn-swap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4M7 20V4M21 8l-4-4-4 4M17 4v16"/></svg>
+        Swap
+      </button>
+      <button class="btn ghost" id="btn-upload" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg>
+        Upload file
+      </button>
+      <input type="file" id="file-input" hidden>
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+
+    <div class="actions opts">
+      <label class="opt"><input type="checkbox" id="opt-urlsafe"> URL-safe (- _ instead of + /)</label>
+    </div>
+
+    <p class="stats" id="file-info" hidden></p>
+
+    <div id="err-slot"></div>
+
+    <div class="result" id="result" hidden>
+      <div class="result-head">
+        <span class="label">Output</span>
+        <span class="stats" id="stats"></span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button class="copy-btn" id="btn-download" type="button" aria-label="Download output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+      <div class="b64-preview" id="preview" hidden><img id="preview-img" alt="Decoded image preview"></div>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content">
+        <p>Switch between Encode and Decode, then paste your text or Base64 string. The output updates instantly. Works with UTF-8 text, including emoji and non-Latin characters. You can also upload any file to encode it directly — images, PDFs, anything — and when decoding, a data URI (<code>data:image/png;base64,...</code>) is detected automatically and previewed if it's an image.</p>
+      </div>
+      <div class="faqs">
+        <details class="faq">
+          <summary>What is Base64 used for?</summary>
+          <p>Base64 encodes binary or text data into ASCII characters, commonly used for embedding data in URLs, JSON, email attachments, and data URIs.</p>
+        </details>
+        <details class="faq">
+          <summary>Is Base64 encryption?</summary>
+          <p>No. Base64 is an encoding scheme, not encryption — anyone can decode it. Don't use it to protect sensitive data.</p>
+        </details>
+        <details class="faq">
+          <summary>Why do I get an error decoding?</summary>
+          <p>The input isn't valid Base64 — check for missing characters or extra whitespace/newlines.</p>
+        </details>
+        <details class="faq">
+          <summary>What is URL-safe Base64?</summary>
+          <p>Standard Base64 uses <code>+</code> and <code>/</code>, which have special meaning in URLs. URL-safe Base64 replaces them with <code>-</code> and <code>_</code> and drops the trailing <code>=</code> padding, so the result can be used directly in a URL or filename.</p>
+        </details>
+        <details class="faq">
+          <summary>Can I turn a Base64 string back into a downloadable file?</summary>
+          <p>Yes — in Decode mode, click the download icon next to the output. If the decoded bytes match a known image format (PNG, JPEG, GIF, WebP) it downloads with the right extension and shows a preview automatically.</p>
+        </details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var mode = 'encode';
+var input = document.getElementById('input');
+var output = document.getElementById('output');
+var result = document.getElementById('result');
+var errSlot = document.getElementById('err-slot');
+var tabEncode = document.getElementById('tab-encode');
+var tabDecode = document.getElementById('tab-decode');
+var inputLabel = document.getElementById('input-label');
+var optUrlSafe = document.getElementById('opt-urlsafe');
+var btnUpload = document.getElementById('btn-upload');
+var fileInput = document.getElementById('file-input');
+var fileInfo = document.getElementById('file-info');
+var statsEl = document.getElementById('stats');
+var preview = document.getElementById('preview');
+var previewImg = document.getElementById('preview-img');
+
+var decodedBytes = null;
+var decodedMime = null;
+
+function showErr(msg) {
+  errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : '';
+}
+
+function toUrlSafe(b64) {
+  return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function fromUrlSafe(b64) {
+  var s = b64.replace(/-/g, '+').replace(/_/g, '/');
+  while (s.length % 4) s += '=';
+  return s;
+}
+
+function bytesToBase64(bytes) {
+  var binary = '';
+  var chunk = 0x8000;
+  for (var i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+function base64ToBytes(clean) {
+  var binary = atob(clean);
+  var bytes = new Uint8Array(binary.length);
+  for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+function detectImageMime(bytes) {
+  if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return { mime: 'image/png', ext: 'png' };
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return { mime: 'image/jpeg', ext: 'jpg' };
+  if (bytes.length >= 6 && bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) return { mime: 'image/gif', ext: 'gif' };
+  if (bytes.length >= 12 && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return { mime: 'image/webp', ext: 'webp' };
+  return null;
+}
+
+function resetPreview() {
+  preview.hidden = true;
+  previewImg.src = '';
+  decodedBytes = null;
+  decodedMime = null;
+}
+
+function run() {
+  var val = input.value;
+  resetPreview();
+  fileInfo.hidden = true;
+  if (!val.trim()) {
+    result.hidden = true;
+    showErr('');
+    return;
+  }
+  try {
+    if (mode === 'encode') {
+      var b64 = btoa(unescape(encodeURIComponent(val)));
+      output.textContent = optUrlSafe.checked ? toUrlSafe(b64) : b64;
+      statsEl.textContent = output.textContent.length + ' chars';
+    } else {
+      var raw = val.trim();
+      var mimeFromUri = null;
+      var m = raw.match(/^data:([^;]+);base64,(.*)$/s);
+      if (m) { mimeFromUri = m[1]; raw = m[2]; }
+      var normalized = /[-_]/.test(raw) && !/[+/]/.test(raw) ? fromUrlSafe(raw) : raw;
+      var bytes = base64ToBytes(normalized.replace(/\s+/g, ''));
+      decodedBytes = bytes;
+      var img = detectImageMime(bytes);
+      decodedMime = mimeFromUri || (img && img.mime) || null;
+
+      try {
+        output.textContent = decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+      } catch (textErr) {
+        output.textContent = '(binary data — ' + bytes.length + ' bytes, not valid UTF-8 text — use Download below)';
+      }
+      statsEl.textContent = bytes.length + ' bytes';
+
+      if (img || (mimeFromUri && mimeFromUri.indexOf('image/') === 0)) {
+        var blobForPreview = new Blob([bytes], { type: decodedMime || 'application/octet-stream' });
+        previewImg.src = URL.createObjectURL(blobForPreview);
+        preview.hidden = false;
+      }
+    }
+    result.hidden = false;
+    showErr('');
+  } catch (e) {
+    result.hidden = true;
+    showErr(mode === 'encode' ? 'Could not encode this input.' : 'Invalid Base64 input.');
+  }
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  tabEncode.setAttribute('aria-selected', mode === 'encode' ? 'true' : 'false');
+  tabDecode.setAttribute('aria-selected', mode === 'decode' ? 'true' : 'false');
+  inputLabel.textContent = mode === 'encode' ? 'Plain text' : 'Base64 string';
+  input.placeholder = mode === 'encode' ? 'Type or paste text here' : 'Paste Base64 here';
+  btnUpload.hidden = mode !== 'encode';
+  run();
+}
+
+tabEncode.addEventListener('click', function () { setMode('encode'); });
+tabDecode.addEventListener('click', function () { setMode('decode'); });
+input.addEventListener('input', run);
+optUrlSafe.addEventListener('change', run);
+
+document.getElementById('btn-swap').addEventListener('click', function () {
+  var newInput = output.textContent;
+  setMode(mode === 'encode' ? 'decode' : 'encode');
+  input.value = newInput;
+  run();
+});
+
+document.getElementById('btn-clear').addEventListener('click', function () {
+  input.value = '';
+  result.hidden = true;
+  fileInfo.hidden = true;
+  showErr('');
+  resetPreview();
+});
+
+document.getElementById('btn-copy').addEventListener('click', function (e) {
+  copyToClipboard(output.textContent, e.currentTarget);
+});
+
+document.getElementById('btn-download').addEventListener('click', function () {
+  if (mode === 'decode' && decodedBytes) {
+    var img = detectImageMime(decodedBytes);
+    var mimeType = decodedMime || (img && img.mime) || 'application/octet-stream';
+    var ext = (img && img.ext) || (mimeType.split('/')[1]) || 'bin';
+    var blob = new Blob([decodedBytes], { type: mimeType });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'decoded.' + ext;
+    a.click();
+    URL.revokeObjectURL(url);
+  } else if (output.textContent) {
+    var blob2 = new Blob([output.textContent], { type: 'text/plain' });
+    var url2 = URL.createObjectURL(blob2);
+    var a2 = document.createElement('a');
+    a2.href = url2;
+    a2.download = 'encoded.txt';
+    a2.click();
+    URL.revokeObjectURL(url2);
+  }
+});
+
+btnUpload.addEventListener('click', function () { fileInput.click(); });
+fileInput.addEventListener('change', function () {
+  var file = fileInput.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function () {
+    var bytes = new Uint8Array(reader.result);
+    var b64 = bytesToBase64(bytes);
+    output.textContent = optUrlSafe.checked ? toUrlSafe(b64) : b64;
+    statsEl.textContent = output.textContent.length + ' chars';
+    fileInfo.hidden = false;
+    fileInfo.textContent = file.name + ' · ' + (file.size / 1024).toFixed(1) + ' KB' + (file.type ? ' · ' + file.type : '');
+    result.hidden = false;
+    showErr('');
+    resetPreview();
+    if (file.type.indexOf('image/') === 0) {
+      previewImg.src = URL.createObjectURL(file);
+      preview.hidden = false;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+});
+</script>
+</body>
+</html>

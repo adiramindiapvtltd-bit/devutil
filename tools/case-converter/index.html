@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case Converter Online — Free | DevUtil</title>
+<meta name="description" content="Free online case converter. Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case and more.">
+<link rel="canonical" href="https://example.com/tools/case-converter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Text">Text Tools</span></p>
+  <div class="page-head">
+    <h1>Case Converter</h1>
+    <p class="lede">Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and more.</p>
+  </div>
+
+  <div class="card tool" data-cat="Text">
+    <div class="field">
+      <label for="input">Text</label>
+      <textarea id="input" placeholder="Convert This Text"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" data-mode="upper">UPPERCASE</button>
+      <button class="btn ghost" data-mode="lower">lowercase</button>
+      <button class="btn ghost" data-mode="title">Title Case</button>
+      <button class="btn ghost" data-mode="sentence">Sentence case</button>
+      <button class="btn ghost" data-mode="camel">camelCase</button>
+      <button class="btn ghost" data-mode="pascal">PascalCase</button>
+      <button class="btn ghost" data-mode="snake">snake_case</button>
+      <button class="btn ghost" data-mode="kebab">kebab-case</button>
+      <button class="btn ghost" data-mode="constant">CONSTANT_CASE</button>
+    </div>
+    <div class="result" id="result" hidden>
+      <div class="result-head">
+        <span class="label">Output</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type or paste text, then click any case button to convert it. camelCase, PascalCase, snake_case, kebab-case, and CONSTANT_CASE are the common naming conventions used across programming languages.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What's the difference between camelCase and PascalCase?</summary><p>camelCase starts with a lowercase letter (<code>myVariable</code>); PascalCase starts with an uppercase letter (<code>MyClass</code>).</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var input = document.getElementById('input');
+var output = document.getElementById('output');
+var result = document.getElementById('result');
+
+function toTitle(s) { return s.replace(/\w\S*/g, function (t) { return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase(); }); }
+function toSentence(s) { return s.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, function (c) { return c.toUpperCase(); }); }
+function toCamel(s) { return s.toLowerCase().trim().replace(/[^a-zA-Z0-9]+(.)/g, function (_, c) { return c.toUpperCase(); }); }
+function toPascal(s) { var c = toCamel(s); return c.charAt(0).toUpperCase() + c.slice(1); }
+function toSnake(s) { return s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase().replace(/^_+|_+$/g, ''); }
+function toKebab(s) { return toSnake(s).replace(/_/g, '-'); }
+
+var CONVERTERS = {
+  upper: function (s) { return s.toUpperCase(); },
+  lower: function (s) { return s.toLowerCase(); },
+  title: toTitle,
+  sentence: toSentence,
+  camel: toCamel,
+  pascal: toPascal,
+  snake: toSnake,
+  kebab: toKebab,
+  constant: function (s) { return toSnake(s).toUpperCase(); }
+};
+
+document.querySelectorAll('[data-mode]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var fn = CONVERTERS[btn.getAttribute('data-mode')];
+    output.textContent = fn(input.value);
+    result.hidden = false;
+  });
+});
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+</script>
+</body>
+</html>

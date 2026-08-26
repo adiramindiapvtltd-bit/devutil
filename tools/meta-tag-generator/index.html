@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meta Tag Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online meta tag generator. Generate SEO and Open Graph meta tags for a web page instantly.">
+<link rel="canonical" href="https://example.com/tools/meta-tag-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>Meta Tag Generator</h1>
+    <p class="lede">Fill in your page details and get ready-to-paste SEO and Open Graph meta tags.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="field"><label for="title">Page title</label><input type="text" id="title" placeholder="DevUtil — Free Online Developer Tools"></div>
+    <div class="field"><label for="desc">Description</label><textarea id="desc" placeholder="Free, fast, browser-based developer tools." style="min-height:70px;"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label for="url">Page URL</label><input type="text" id="url" placeholder="https://example.com/"></div>
+      <div class="field"><label for="site">Site name</label><input type="text" id="site" placeholder="DevUtil"></div>
+      <div class="field"><label for="image">Image URL</label><input type="text" id="image" placeholder="https://example.com/og-image.png"></div>
+      <div class="field"><label for="twitter">Twitter @handle</label><input type="text" id="twitter" placeholder="@yourhandle"></div>
+    </div>
+
+    <div class="result" style="margin-top:14px;">
+      <div class="result-head">
+        <span class="label">Meta tags</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Fill in whichever fields apply — output updates live. Paste the result into your page's <code>&lt;head&gt;</code>. Open Graph tags control how the page looks when shared on Facebook, LinkedIn, Slack, etc.; Twitter Card tags control the X/Twitter preview.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var fields = ['title', 'desc', 'url', 'site', 'image', 'twitter'].reduce(function (acc, id) { acc[id] = document.getElementById(id); return acc; }, {});
+var output = document.getElementById('output');
+
+function esc(s) { return s.replace(/"/g, '&quot;'); }
+
+function run() {
+  var title = fields.title.value.trim();
+  var desc = fields.desc.value.trim();
+  var url = fields.url.value.trim();
+  var site = fields.site.value.trim();
+  var image = fields.image.value.trim();
+  var twitter = fields.twitter.value.trim();
+
+  var lines = [];
+  if (title) lines.push('<title>' + esc(title) + '</title>');
+  if (desc) lines.push('<meta name="description" content="' + esc(desc) + '">');
+  if (url) lines.push('<link rel="canonical" href="' + esc(url) + '">');
+  lines.push('');
+  lines.push('<meta property="og:type" content="website">');
+  if (title) lines.push('<meta property="og:title" content="' + esc(title) + '">');
+  if (desc) lines.push('<meta property="og:description" content="' + esc(desc) + '">');
+  if (url) lines.push('<meta property="og:url" content="' + esc(url) + '">');
+  if (site) lines.push('<meta property="og:site_name" content="' + esc(site) + '">');
+  if (image) lines.push('<meta property="og:image" content="' + esc(image) + '">');
+  lines.push('');
+  lines.push('<meta name="twitter:card" content="' + (image ? 'summary_large_image' : 'summary') + '">');
+  if (title) lines.push('<meta name="twitter:title" content="' + esc(title) + '">');
+  if (desc) lines.push('<meta name="twitter:description" content="' + esc(desc) + '">');
+  if (image) lines.push('<meta name="twitter:image" content="' + esc(image) + '">');
+  if (twitter) lines.push('<meta name="twitter:site" content="' + esc(twitter) + '">');
+
+  output.textContent = lines.join('\n');
+}
+
+Object.keys(fields).forEach(function (k) { fields[k].addEventListener('input', run); });
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+run();
+</script>
+</body>
+</html>

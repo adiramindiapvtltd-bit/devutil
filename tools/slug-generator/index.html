@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slug Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online slug generator. Turn any text into a clean URL slug instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/slug-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Generators">Generators</span></p>
+  <div class="page-head">
+    <h1>Slug Generator</h1>
+    <p class="lede">Turn any text into a clean, URL-safe slug.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="field">
+      <label for="input">Text</label>
+      <textarea id="input" placeholder="10 Tips for Café Owners in 2026!" style="min-height:80px;"></textarea>
+    </div>
+    <div class="actions">
+      <label class="opt">Separator
+        <select id="sep">
+          <option value="-">- (hyphen)</option>
+          <option value="_">_ (underscore)</option>
+        </select>
+      </label>
+      <label class="opt"><input type="checkbox" id="opt-lower" checked> Lowercase</label>
+    </div>
+    <div class="result" id="result">
+      <div class="result-head">
+        <span class="label">Slug</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy slug">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type any text and the slug updates live: accented characters are stripped to their plain equivalent, everything is lowercased (optional), and spaces/punctuation become a single separator with no leading or trailing separator.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What's a slug used for?</summary><p>The URL-friendly part of a page address, e.g. turning "10 Tips for Café Owners!" into <code>10-tips-for-cafe-owners</code> for a blog post URL.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var input = document.getElementById('input');
+var sep = document.getElementById('sep');
+var optLower = document.getElementById('opt-lower');
+var output = document.getElementById('output');
+
+function slugify(text) {
+  var s = text.normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  if (optLower.checked) s = s.toLowerCase();
+  s = s.trim().replace(/[^a-zA-Z0-9\s-]/g, '').replace(/[\s_-]+/g, sep.value);
+  var esc = sep.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return s.replace(new RegExp('^' + esc + '+|' + esc + '+$', 'g'), '');
+}
+
+function run() { output.textContent = slugify(input.value); }
+
+input.addEventListener('input', run);
+sep.addEventListener('change', run);
+optLower.addEventListener('change', run);
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+run();
+</script>
+</body>
+</html>

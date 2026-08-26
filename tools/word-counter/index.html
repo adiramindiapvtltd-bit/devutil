@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word & Character Counter Online — Free | DevUtil</title>
+<meta name="description" content="Free online word and character counter. Count words, characters, sentences, and estimated reading time.">
+<link rel="canonical" href="https://example.com/tools/word-counter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.count-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 14px; margin-top: 16px; }
+.count-tile { padding: 14px; background: var(--surface); border-radius: var(--r-sm); text-align: center; }
+.count-tile .v { display: block; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.count-tile .k { display: block; margin-top: 4px; font-size: 11.5px; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Text">Text Tools</span></p>
+  <div class="page-head">
+    <h1>Word &amp; Character Counter</h1>
+    <p class="lede">Count words, characters, sentences, and estimated reading time, live as you type.</p>
+  </div>
+
+  <div class="card tool" data-cat="Text">
+    <div class="field">
+      <label for="input">Text</label>
+      <textarea id="input" placeholder="Paste or type text here" style="min-height:200px;"></textarea>
+    </div>
+    <div class="count-grid">
+      <div class="count-tile"><span class="v" id="c-words">0</span><span class="k">Words</span></div>
+      <div class="count-tile"><span class="v" id="c-chars">0</span><span class="k">Characters</span></div>
+      <div class="count-tile"><span class="v" id="c-chars-nospace">0</span><span class="k">No spaces</span></div>
+      <div class="count-tile"><span class="v" id="c-sentences">0</span><span class="k">Sentences</span></div>
+      <div class="count-tile"><span class="v" id="c-paragraphs">0</span><span class="k">Paragraphs</span></div>
+      <div class="count-tile"><span class="v" id="c-reading">0s</span><span class="k">Reading time</span></div>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>All counts update live as you type. Reading time is estimated at 200 words per minute, a common average adult reading speed.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>How are sentences counted?</summary><p>By counting sequences ending in <code>.</code>, <code>!</code>, or <code>?</code> — it's an approximation and can be thrown off by abbreviations or decimals.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var input = document.getElementById('input');
+var els = {
+  words: document.getElementById('c-words'),
+  chars: document.getElementById('c-chars'),
+  charsNoSpace: document.getElementById('c-chars-nospace'),
+  sentences: document.getElementById('c-sentences'),
+  paragraphs: document.getElementById('c-paragraphs'),
+  reading: document.getElementById('c-reading')
+};
+
+function run() {
+  var text = input.value;
+  var trimmed = text.trim();
+  var words = trimmed ? trimmed.split(/\s+/).length : 0;
+  var chars = text.length;
+  var charsNoSpace = text.replace(/\s/g, '').length;
+  var sentences = trimmed ? (trimmed.match(/[.!?]+(\s|$)/g) || []).length || (trimmed ? 1 : 0) : 0;
+  var paragraphs = trimmed ? trimmed.split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length : 0;
+  var minutes = words / 200;
+  var readingLabel = minutes < 1 ? Math.max(1, Math.round(minutes * 60)) + 's' : Math.round(minutes) + ' min';
+
+  els.words.textContent = words;
+  els.chars.textContent = chars;
+  els.charsNoSpace.textContent = charsNoSpace;
+  els.sentences.textContent = sentences;
+  els.paragraphs.textContent = paragraphs;
+  els.reading.textContent = readingLabel;
+}
+
+input.addEventListener('input', run);
+run();
+</script>
+</body>
+</html>

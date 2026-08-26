@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markdown Previewer Online — Free | DevUtil</title>
+<meta name="description" content="Free online Markdown previewer. Write Markdown and see the rendered HTML live in your browser.">
+<link rel="canonical" href="https://example.com/tools/markdown-previewer/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.md-preview { margin-top: 14px; padding: 16px 18px; background: var(--surface); border-radius: var(--r-sm); max-height: 420px; overflow: auto; }
+.md-preview h1, .md-preview h2, .md-preview h3 { margin: 0.6em 0 0.3em; }
+.md-preview p { margin: 0 0 0.8em; color: var(--text-2); }
+.md-preview code { font-family: var(--mono); font-size: .9em; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+.md-preview pre { background: var(--surface-2); padding: 12px; border-radius: 8px; overflow: auto; }
+.md-preview pre code { background: none; padding: 0; }
+.md-preview ul, .md-preview ol { margin: 0 0 0.8em; padding-left: 1.4em; color: var(--text-2); }
+.md-preview blockquote { margin: 0 0 0.8em; padding-left: 12px; border-left: 3px solid var(--line-strong); color: var(--text-3); }
+.md-preview a { color: var(--hue, var(--accent)); }
+.md-preview img { max-width: 100%; }
+.md-preview table { border-collapse: collapse; margin-bottom: 0.8em; }
+.md-preview th, .md-preview td { border: 1px solid var(--line); padding: 6px 10px; font-size: 14px; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Formatting">Formatting</span></p>
+  <div class="page-head">
+    <h1>Markdown Previewer</h1>
+    <p class="lede">Write Markdown on the left, see the rendered HTML live. Runs entirely in your browser.</p>
+  </div>
+
+  <div class="card tool" data-cat="Formatting">
+    <div class="field">
+      <label for="input">Markdown</label>
+      <textarea id="input" placeholder="# Hello&#10;&#10;Some **bold** and _italic_ text.&#10;&#10;- item one&#10;- item two"></textarea>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="btn-sample">Load sample</button>
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+    <div class="md-preview" id="preview"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Type or paste Markdown and the preview updates as you type, supporting headings, bold/italic, lists, links, images, code blocks, blockquotes, and tables.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Is my content uploaded anywhere?</summary><p>No. Rendering happens locally using the marked library, loaded once from a CDN — your Markdown content itself is never sent anywhere.</p></details>
+        <details class="faq"><summary>Does it support GitHub-flavored Markdown?</summary><p>Yes, including tables, strikethrough, and fenced code blocks.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+var input = document.getElementById('input');
+var preview = document.getElementById('preview');
+var SAMPLE = '# Hello DevUtil\n\nSome **bold**, _italic_, and `inline code`.\n\n- item one\n- item two\n\n> A blockquote.\n\n```js\nconsole.log("hi");\n```\n\n| A | B |\n|---|---|\n| 1 | 2 |\n';
+
+function render() {
+  preview.innerHTML = input.value.trim() ? marked.parse(input.value) : '<p style="color:var(--text-3)">Preview will appear here.</p>';
+}
+
+input.addEventListener('input', render);
+document.getElementById('btn-sample').addEventListener('click', function () { input.value = SAMPLE; render(); });
+document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; render(); });
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Color Converter Online — HEX, RGB, HSL | DevUtil</title>
+<meta name="description" content="Free online color converter. Convert colors between HEX, RGB, and HSL instantly in your browser.">
+<link rel="canonical" href="https://example.com/tools/color-converter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.swatch-big { height: 100px; border-radius: var(--r); border: 1px solid var(--line); margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>Color Converter</h1>
+    <p class="lede">Convert colors between HEX, RGB, and HSL.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="swatch-big" id="swatch"></div>
+    <div class="actions" style="margin-bottom:6px;">
+      <input type="color" id="picker" value="#4f46e5">
+    </div>
+    <div class="field"><label for="hex">HEX</label><input type="text" id="hex" value="#4f46e5"></div>
+    <div class="field"><label for="rgb">RGB</label><input type="text" id="rgb" value="rgb(79, 70, 229)"></div>
+    <div class="field"><label for="hsl">HSL</label><input type="text" id="hsl" value="hsl(243, 75%, 59%)"></div>
+    <div id="err-slot"></div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Use the color picker, or edit any of the HEX, RGB, or HSL fields directly — the other two and the swatch update automatically.</p></div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script>
+var picker = document.getElementById('picker');
+var hexInput = document.getElementById('hex');
+var rgbInput = document.getElementById('rgb');
+var hslInput = document.getElementById('hsl');
+var swatch = document.getElementById('swatch');
+var errSlot = document.getElementById('err-slot');
+
+function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+
+function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map(function (v) { return Math.round(v).toString(16).padStart(2, '0'); }).join('');
+}
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+  var num = parseInt(hex, 16);
+  return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+}
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
+  if (max === min) { h = s = 0; }
+  else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      default: h = (r - g) / d + 4;
+    }
+    h /= 6;
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
+function hslToRgb(h, s, l) {
+  h /= 360; s /= 100; l /= 100;
+  var r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    var hue2rgb = function (p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  return [r * 255, g * 255, b * 255];
+}
+
+function updateAll(rgb, source) {
+  var hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+  var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+  if (source !== 'hex') hexInput.value = hex;
+  if (source !== 'rgb') rgbInput.value = 'rgb(' + Math.round(rgb[0]) + ', ' + Math.round(rgb[1]) + ', ' + Math.round(rgb[2]) + ')';
+  if (source !== 'hsl') hslInput.value = 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + hsl[2] + '%)';
+  if (source !== 'picker') picker.value = hex;
+  swatch.style.background = hex;
+  showErr('');
+}
+
+picker.addEventListener('input', function () { updateAll(hexToRgb(picker.value), 'picker'); });
+
+hexInput.addEventListener('input', function () {
+  if (!/^#?[0-9a-fA-F]{6}$/.test(hexInput.value) && !/^#?[0-9a-fA-F]{3}$/.test(hexInput.value)) { showErr('Invalid HEX color.'); return; }
+  updateAll(hexToRgb(hexInput.value), 'hex');
+});
+
+rgbInput.addEventListener('input', function () {
+  var m = rgbInput.value.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+  if (!m) { showErr('Invalid RGB — use rgb(r, g, b).'); return; }
+  updateAll([+m[1], +m[2], +m[3]], 'rgb');
+});
+
+hslInput.addEventListener('input', function () {
+  var m = hslInput.value.match(/hsla?\(\s*(\d+)\s*,\s*(\d+)%?\s*,\s*(\d+)%?/i);
+  if (!m) { showErr('Invalid HSL — use hsl(h, s%, l%).'); return; }
+  updateAll(hslToRgb(+m[1], +m[2], +m[3]), 'hsl');
+});
+
+updateAll(hexToRgb(picker.value), 'init');
+</script>
+</body>
+</html>

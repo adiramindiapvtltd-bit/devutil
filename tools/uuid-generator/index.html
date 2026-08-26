@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UUID Generator Online — Free UUID v4 Generator | DevUtil</title>
+<meta name="description" content="Generate random UUID v4 identifiers instantly in your browser. Free, no signup, generate one or many at once.">
+<link rel="canonical" href="https://example.com/tools/uuid-generator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+
+<a class="skip" href="#main">Skip to the tool</a>
+
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs">
+    <a href="/">All tools</a>
+    <span class="sep">/</span>
+    <span class="cat-tag" data-cat="Generators">Generators</span>
+  </p>
+
+  <div class="page-head">
+    <h1>UUID Generator</h1>
+    <p class="lede">Generate random UUID v4 identifiers. Runs entirely in your browser using the Web Crypto API.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="actions" style="align-items:flex-end;">
+      <div class="field" style="max-width:110px;">
+        <label for="count">How many?</label>
+        <input type="text" id="count" value="5" inputmode="numeric">
+      </div>
+      <div class="field" style="max-width:190px;">
+        <label for="opt-version">Version</label>
+        <select id="opt-version">
+          <option value="v4">v4 — random</option>
+          <option value="v7">v7 — time-ordered</option>
+          <option value="nil">Nil — all zeros</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btn-generate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+        Generate
+      </button>
+      <button class="btn ghost" id="btn-copy-all">Copy all</button>
+      <button class="btn ghost" id="btn-download">Download .txt</button>
+    </div>
+
+    <div class="actions opts">
+      <label class="opt"><input type="checkbox" id="opt-upper"> Uppercase</label>
+      <label class="opt"><input type="checkbox" id="opt-nohyphen"> No hyphens</label>
+      <label class="opt"><input type="checkbox" id="opt-braces"> Wrap in { }</label>
+    </div>
+
+    <div class="result" id="result">
+      <div class="result-head">
+        <span class="label">Generated UUIDs</span>
+        <span class="stats" id="stats"></span>
+      </div>
+      <ul class="uuid-list" id="uuid-list"></ul>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content">
+        <p>Enter how many UUIDs you need, pick a version, and click Generate. Use the format options to switch case, drop hyphens, or wrap each ID in braces for direct use in code. Copy individual IDs, copy them all at once, or download the whole batch as a text file.</p>
+      </div>
+      <div class="faqs">
+        <details class="faq">
+          <summary>Are these UUIDs guaranteed unique?</summary>
+          <p>UUID v4 uses 122 random bits, making collisions astronomically unlikely — safe for practically any real-world use.</p>
+        </details>
+        <details class="faq">
+          <summary>What's the difference between v4 and v7?</summary>
+          <p>v4 is fully random. v7 embeds a millisecond timestamp in the first bits, so IDs generated later always sort after earlier ones — this gives much better database index locality than v4 when used as a primary key, while still being effectively unique.</p>
+        </details>
+        <details class="faq">
+          <summary>What's the Nil UUID for?</summary>
+          <p><code>00000000-0000-0000-0000-000000000000</code> is the reserved "empty" UUID, often used as a placeholder or sentinel value meaning "no ID" in code and databases.</p>
+        </details>
+        <details class="faq">
+          <summary>What's the format?</summary>
+          <p>Standard 8-4-4-4-12 hex format, e.g. f47ac10b-58cc-4372-a567-0e02b2c3d479.</p>
+        </details>
+        <details class="faq">
+          <summary>Is this cryptographically secure?</summary>
+          <p>Yes, generation uses crypto.getRandomValues(), the browser's cryptographically secure random number generator.</p>
+        </details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+function toHex(bytes) {
+  return Array.prototype.map.call(bytes, function (b) { return b.toString(16).padStart(2, '0'); });
+}
+function hexToUuid(hex) {
+  return hex.slice(0,4).join('') + '-' + hex.slice(4,6).join('') + '-' + hex.slice(6,8).join('') + '-' + hex.slice(8,10).join('') + '-' + hex.slice(10,16).join('');
+}
+
+function uuidv4() {
+  var bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  return hexToUuid(toHex(bytes));
+}
+
+function uuidv7() {
+  var ts = Date.now();
+  var bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  for (var i = 0; i < 6; i++) {
+    bytes[5 - i] = ts & 0xff;
+    ts = Math.floor(ts / 256);
+  }
+  bytes[6] = (bytes[6] & 0x0f) | 0x70;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  return hexToUuid(toHex(bytes));
+}
+
+function uuidNil() {
+  return '00000000-0000-0000-0000-000000000000';
+}
+
+var listEl = document.getElementById('uuid-list');
+var countInput = document.getElementById('count');
+var versionSelect = document.getElementById('opt-version');
+var optUpper = document.getElementById('opt-upper');
+var optNoHyphen = document.getElementById('opt-nohyphen');
+var optBraces = document.getElementById('opt-braces');
+var statsEl = document.getElementById('stats');
+var currentIds = [];
+
+var copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+function formatId(id) {
+  var out = id;
+  if (optNoHyphen.checked) out = out.replace(/-/g, '');
+  if (optUpper.checked) out = out.toUpperCase();
+  if (optBraces.checked) out = '{' + out + '}';
+  return out;
+}
+
+function render() {
+  listEl.innerHTML = currentIds.map(function (id) {
+    var formatted = formatId(id);
+    return '<li><span>' + formatted + '</span><button class="copy-btn copy-single" type="button" data-id="' + formatted + '" aria-label="Copy">' + copyIconSvg + '</button></li>';
+  }).join('');
+  statsEl.textContent = currentIds.length + (currentIds.length === 1 ? ' UUID' : ' UUIDs');
+}
+
+function generate() {
+  var n = parseInt(countInput.value, 10);
+  if (isNaN(n) || n < 1) n = 1;
+  if (n > 1000) n = 1000;
+  var gen = versionSelect.value === 'v7' ? uuidv7 : versionSelect.value === 'nil' ? uuidNil : uuidv4;
+  currentIds = [];
+  for (var i = 0; i < n; i++) currentIds.push(gen());
+  render();
+}
+
+listEl.addEventListener('click', function (e) {
+  var btn = e.target.closest('.copy-single');
+  if (!btn) return;
+  copyToClipboard(btn.getAttribute('data-id'), btn);
+});
+
+document.getElementById('btn-generate').addEventListener('click', generate);
+document.getElementById('btn-copy-all').addEventListener('click', function (e) {
+  copyToClipboard(currentIds.map(formatId).join('\n'), e.currentTarget);
+});
+document.getElementById('btn-download').addEventListener('click', function () {
+  if (!currentIds.length) return;
+  var blob = new Blob([currentIds.map(formatId).join('\n')], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'uuids.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+optUpper.addEventListener('change', render);
+optNoHyphen.addEventListener('change', render);
+optBraces.addEventListener('change', render);
+
+generate();
+</script>
+</body>
+</html>

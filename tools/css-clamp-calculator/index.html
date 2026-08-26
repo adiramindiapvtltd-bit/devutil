@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSS Clamp() Calculator Online — Fluid Typography | DevUtil</title>
+<meta name="description" content="Free online CSS clamp() calculator for fluid, responsive typography. Generate a clamp() value from min/max sizes and viewport widths.">
+<link rel="canonical" href="https://example.com/tools/css-clamp-calculator/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+.clamp-preview { margin-top: 16px; padding: 20px; background: var(--surface); border-radius: var(--r-sm); text-align: center; }
+.clamp-preview .sample { font-weight: 700; }
+.clamp-preview .hint { margin-top: 8px; font-size: 12px; color: var(--text-3); }
+</style>
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Web">Web &amp; CSS</span></p>
+  <div class="page-head">
+    <h1>CSS Clamp() Calculator</h1>
+    <p class="lede">Generate a fluid <code>clamp()</code> value that scales smoothly between a min and max size across viewport widths.</p>
+  </div>
+
+  <div class="card tool" data-cat="Web">
+    <div class="grid2">
+      <div class="field"><label for="min-size">Min size (px)</label><input type="text" id="min-size" value="16" inputmode="numeric"></div>
+      <div class="field"><label for="max-size">Max size (px)</label><input type="text" id="max-size" value="24" inputmode="numeric"></div>
+      <div class="field"><label for="min-vw">Min viewport (px)</label><input type="text" id="min-vw" value="320" inputmode="numeric"></div>
+      <div class="field"><label for="max-vw">Max viewport (px)</label><input type="text" id="max-vw" value="1280" inputmode="numeric"></div>
+    </div>
+
+    <div class="clamp-preview">
+      <div class="sample" id="sample" style="font-size:16px;">The quick brown fox</div>
+      <p class="hint">Resize your browser window to see this scale — clamp() responds to real viewport width, not this preview box.</p>
+    </div>
+
+    <div class="result" style="margin-top:14px;">
+      <div class="result-head">
+        <span class="label">CSS</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy CSS">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Set the smallest size at your smallest viewport and the largest size at your largest viewport. The generated <code>clamp()</code> interpolates linearly between them using <code>vw</code> units, and stays pinned to the min/max outside that range.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>Why use clamp() instead of media queries?</summary><p>It scales continuously with the viewport instead of jumping at fixed breakpoints, giving smoother, more natural fluid typography with one line of CSS.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var ids = ['min-size', 'max-size', 'min-vw', 'max-vw'];
+var els = {};
+ids.forEach(function (id) { els[id] = document.getElementById(id); });
+var output = document.getElementById('output');
+var sample = document.getElementById('sample');
+
+function run() {
+  var minPx = parseFloat(els['min-size'].value) || 0;
+  var maxPx = parseFloat(els['max-size'].value) || 0;
+  var minVwPx = parseFloat(els['min-vw'].value) || 1;
+  var maxVwPx = parseFloat(els['max-vw'].value) || 1;
+
+  var minRem = minPx / 16, maxRem = maxPx / 16;
+  var minVwRem = minVwPx / 16, maxVwRem = maxVwPx / 16;
+  var slope = (maxRem - minRem) / (maxVwRem - minVwRem);
+  var yIntersection = -minVwRem * slope + minRem;
+  var css = 'clamp(' + minRem.toFixed(3) + 'rem, ' + yIntersection.toFixed(4) + 'rem + ' + (slope * 100).toFixed(4) + 'vw, ' + maxRem.toFixed(3) + 'rem)';
+
+  output.textContent = 'font-size: ' + css + ';';
+  sample.style.fontSize = css;
+}
+
+ids.forEach(function (id) { els[id].addEventListener('input', run); });
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+run();
+</script>
+</body>
+</html>

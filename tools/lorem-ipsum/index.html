@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lorem Ipsum Generator Online — Free | DevUtil</title>
+<meta name="description" content="Free online Lorem Ipsum generator. Generate placeholder text by paragraphs, words, or sentences.">
+<link rel="canonical" href="https://example.com/tools/lorem-ipsum/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+<a class="skip" href="#main">Skip to the tool</a>
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Generators">Generators</span></p>
+  <div class="page-head">
+    <h1>Lorem Ipsum Generator</h1>
+    <p class="lede">Generate placeholder text by paragraphs, sentences, or words.</p>
+  </div>
+
+  <div class="card tool" data-cat="Generators">
+    <div class="actions" style="align-items:flex-end;">
+      <div class="field" style="max-width:150px;">
+        <label for="unit">Generate by</label>
+        <select id="unit">
+          <option value="paragraphs">Paragraphs</option>
+          <option value="sentences">Sentences</option>
+          <option value="words">Words</option>
+        </select>
+      </div>
+      <div class="field" style="max-width:100px;">
+        <label for="count">How many?</label>
+        <input type="text" id="count" value="3" inputmode="numeric">
+      </div>
+      <label class="opt"><input type="checkbox" id="opt-classic" checked> Start with "Lorem ipsum…"</label>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-generate">Generate</button>
+    </div>
+    <div class="result" id="result">
+      <div class="result-head">
+        <span class="label">Output</span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <pre class="code-block" id="output"></pre>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content"><p>Pick paragraphs, sentences, or words, set how many you need, and click Generate. Classic mode always starts with the traditional "Lorem ipsum dolor sit amet…" opening.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What is Lorem Ipsum?</summary><p>Scrambled, mostly-meaningless Latin text traditionally used as placeholder copy in design mockups so viewers focus on layout rather than reading real content.</p></details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var WORDS = ('lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore ' +
+  'magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat ' +
+  'duis aute irure in reprehenderit voluptate velit esse cillum eu fugiat nulla pariatur excepteur sint occaecat ' +
+  'cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum').split(' ');
+
+var unit = document.getElementById('unit');
+var count = document.getElementById('count');
+var optClassic = document.getElementById('opt-classic');
+var output = document.getElementById('output');
+
+function randWord() { return WORDS[Math.floor(Math.random() * WORDS.length)]; }
+
+function makeSentence(minWords, maxWords) {
+  var n = minWords + Math.floor(Math.random() * (maxWords - minWords));
+  var words = [];
+  for (var i = 0; i < n; i++) words.push(randWord());
+  var s = words.join(' ');
+  return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+}
+
+function makeParagraph(sentenceCount) {
+  var sentences = [];
+  for (var i = 0; i < sentenceCount; i++) sentences.push(makeSentence(6, 16));
+  return sentences.join(' ');
+}
+
+function generate() {
+  var n = Math.max(1, Math.min(50, parseInt(count.value, 10) || 1));
+  var result = [];
+
+  if (unit.value === 'words') {
+    var words = [];
+    for (var i = 0; i < n; i++) words.push(randWord());
+    if (optClassic.checked) words.splice(0, 5, 'lorem', 'ipsum', 'dolor', 'sit', 'amet');
+    result.push(words.join(' '));
+  } else if (unit.value === 'sentences') {
+    for (var i = 0; i < n; i++) {
+      var s = makeSentence(6, 16);
+      if (i === 0 && optClassic.checked) s = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+      result.push(s);
+    }
+    result = [result.join(' ')];
+  } else {
+    for (var i = 0; i < n; i++) {
+      var p = makeParagraph(4 + Math.floor(Math.random() * 3));
+      if (i === 0 && optClassic.checked) {
+        p = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' + p;
+      }
+      result.push(p);
+    }
+  }
+  output.textContent = result.join('\n\n');
+}
+
+unit.addEventListener('change', generate);
+count.addEventListener('input', generate);
+optClassic.addEventListener('change', generate);
+document.getElementById('btn-generate').addEventListener('click', generate);
+document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+
+generate();
+</script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Formatter &amp; Validator Online — Free, No Signup | DevUtil</title>
+<meta name="description" content="Free online JSON formatter and validator. Beautify, minify, and validate JSON instantly in your browser. No signup, no data sent to a server.">
+<link rel="canonical" href="https://example.com/tools/json-formatter/">
+<script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<meta name="theme-color" content="#eef1f6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
+
+<a class="skip" href="#main">Skip to the tool</a>
+
+<div id="site-header"></div>
+
+<main id="main" class="wrap page">
+  <p class="crumbs">
+    <a href="/">All tools</a>
+    <span class="sep">/</span>
+    <span class="cat-tag" data-cat="Formatting">Formatting</span>
+  </p>
+
+  <div class="page-head">
+    <h1>JSON Formatter &amp; Validator</h1>
+    <p class="lede">Beautify, minify, and validate JSON instantly. Runs entirely in your browser — nothing you paste is uploaded.</p>
+  </div>
+
+  <div class="card tool" data-cat="Formatting">
+    <div class="field">
+      <label for="input">Input</label>
+      <textarea id="input" placeholder='{"name": "example", "valid": true}'></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btn-beautify">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+        Beautify
+      </button>
+      <button class="btn ghost" id="btn-minify">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3M16 3v3a2 2 0 0 0 2 2h3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+        Minify
+      </button>
+      <button class="btn ghost" id="btn-sample">Load sample</button>
+      <button class="btn ghost" id="btn-clear">Clear</button>
+    </div>
+
+    <div class="actions opts">
+      <label class="opt"><input type="checkbox" id="opt-sort"> Sort keys</label>
+      <label class="opt">Indent
+        <select id="opt-indent">
+          <option value="2">2 spaces</option>
+          <option value="4">4 spaces</option>
+          <option value="tab">Tab</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="err-slot"></div>
+
+    <div class="result" id="result" hidden>
+      <div class="result-head">
+        <span class="label">Output</span>
+        <span class="stats" id="stats"></span>
+        <div class="result-tools">
+          <button class="copy-btn" id="btn-copy" type="button" aria-label="Copy output">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button class="copy-btn" id="btn-download" type="button" aria-label="Download JSON file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="tabs view-tabs" role="tablist">
+        <button class="tab" id="tab-text" role="tab" aria-selected="true">Text</button>
+        <button class="tab" id="tab-tree" role="tab" aria-selected="false">Tree</button>
+      </div>
+      <pre class="code-block" id="output"></pre>
+      <div class="json-tree" id="tree-output" hidden></div>
+    </div>
+  </div>
+
+  <details class="guide">
+    <summary class="guide-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 3.5"/><path d="M12 17h.01"/></svg>
+      How this works &amp; FAQ
+    </summary>
+    <div class="guide-body">
+      <div class="content">
+        <p>Paste any JSON text into the box above, then click Beautify to pretty-print it, or Minify to compress it to a single line. Switch the output to Tree view to explore nested objects and arrays with collapsible nodes — handy for large payloads. Turn on Sort keys to alphabetize object keys, and pick 2-space, 4-space, or tab indentation. If the JSON is invalid, an error message shows you what's wrong and where.</p>
+      </div>
+      <div class="faqs">
+        <details class="faq">
+          <summary>Is my data uploaded anywhere?</summary>
+          <p>No. All formatting happens locally in your browser using JavaScript. Nothing is sent to a server.</p>
+        </details>
+        <details class="faq">
+          <summary>What's the difference between beautify and minify?</summary>
+          <p>Beautify adds indentation and line breaks for readability. Minify removes all unnecessary whitespace to reduce file size.</p>
+        </details>
+        <details class="faq">
+          <summary>What does Tree view show?</summary>
+          <p>An interactive, collapsible view of your JSON's structure — click any object or array to expand or collapse it. Useful for quickly navigating deeply nested data without scrolling through raw text.</p>
+        </details>
+        <details class="faq">
+          <summary>Why does it say my JSON is invalid?</summary>
+          <p>Common causes: trailing commas, single quotes instead of double quotes, or missing brackets/braces. The error message includes what the parser hit.</p>
+        </details>
+      </div>
+    </div>
+  </details>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/chrome.js"></script>
+<script src="/assets/js/copy.js"></script>
+<script>
+var SAMPLE = '{\n  "name": "example",\n  "valid": true,\n  "tags": ["json", "formatter"],\n  "nested": {"count": 2, "active": true, "note": null}\n}';
+var input = document.getElementById('input');
+var output = document.getElementById('output');
+var treeOutput = document.getElementById('tree-output');
+var result = document.getElementById('result');
+var errSlot = document.getElementById('err-slot');
+var statsEl = document.getElementById('stats');
+var optSort = document.getElementById('opt-sort');
+var optIndent = document.getElementById('opt-indent');
+var tabText = document.getElementById('tab-text');
+var tabTree = document.getElementById('tab-tree');
+var lastMode = 'beautify';
+var view = 'text';
+
+function showErr(msg) {
+  errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : '';
+}
+
+function sortDeep(value) {
+  if (Array.isArray(value)) return value.map(sortDeep);
+  if (value && typeof value === 'object') {
+    var out = {};
+    Object.keys(value).sort().forEach(function (k) { out[k] = sortDeep(value[k]); });
+    return out;
+  }
+  return value;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; });
+}
+
+function renderNode(value, key) {
+  var keyHtml = key !== null ? '<span class="tree-key">"' + escapeHtml(key) + '"</span><span class="tree-punc">: </span>' : '';
+  if (value === null) return '<div class="tree-row">' + keyHtml + '<span class="t-null">null</span></div>';
+  var isArr = Array.isArray(value);
+  if (isArr || typeof value === 'object') {
+    var keys = isArr ? value.map(function (_, i) { return i; }) : Object.keys(value);
+    var open = isArr ? '[' : '{';
+    var close = isArr ? ']' : '}';
+    if (keys.length === 0) return '<div class="tree-row">' + keyHtml + '<span class="tree-punc">' + open + close + '</span></div>';
+    var inner = keys.map(function (k) {
+      return '<li>' + renderNode(isArr ? value[k] : value[k], isArr ? null : k) + '</li>';
+    }).join('');
+    var countLabel = keys.length + (isArr ? (keys.length === 1 ? ' item' : ' items') : (keys.length === 1 ? ' key' : ' keys'));
+    return '<details class="tree-node" open>' +
+      '<summary>' + keyHtml + '<span class="tree-punc">' + open + '</span><span class="tree-count">' + countLabel + '</span></summary>' +
+      '<ul>' + inner + '</ul>' +
+      '<div class="tree-close">' + close + '</div>' +
+      '</details>';
+  }
+  if (typeof value === 'string') return '<div class="tree-row">' + keyHtml + '<span class="t-string">"' + escapeHtml(value) + '"</span></div>';
+  if (typeof value === 'number') return '<div class="tree-row">' + keyHtml + '<span class="t-number">' + value + '</span></div>';
+  if (typeof value === 'boolean') return '<div class="tree-row">' + keyHtml + '<span class="t-boolean">' + value + '</span></div>';
+  return '<div class="tree-row">' + keyHtml + escapeHtml(value) + '</div>';
+}
+
+function setView(v) {
+  view = v;
+  tabText.setAttribute('aria-selected', v === 'text' ? 'true' : 'false');
+  tabTree.setAttribute('aria-selected', v === 'tree' ? 'true' : 'false');
+  output.hidden = v !== 'text';
+  treeOutput.hidden = v !== 'tree';
+}
+
+function run(mode) {
+  lastMode = mode;
+  var val = input.value;
+  if (!val.trim()) {
+    result.hidden = true;
+    showErr('');
+    return;
+  }
+  try {
+    var parsed = JSON.parse(val);
+    if (optSort.checked) parsed = sortDeep(parsed);
+
+    var indent = optIndent.value === 'tab' ? '\t' : Number(optIndent.value);
+    var text = mode === 'beautify' ? JSON.stringify(parsed, null, indent) : JSON.stringify(parsed);
+    output.textContent = text;
+    treeOutput.innerHTML = renderNode(parsed, null);
+
+    var beforeLen = val.length;
+    var afterLen = text.length;
+    var savedPct = beforeLen > 0 ? Math.round((1 - afterLen / beforeLen) * 100) : 0;
+    statsEl.textContent = afterLen + ' chars' + (mode === 'minify' && savedPct > 0 ? ' · ' + savedPct + '% smaller' : '');
+
+    result.hidden = false;
+    showErr('');
+  } catch (e) {
+    result.hidden = true;
+    showErr('Invalid JSON: ' + e.message);
+  }
+}
+
+document.getElementById('btn-beautify').addEventListener('click', function () { run('beautify'); });
+document.getElementById('btn-minify').addEventListener('click', function () { run('minify'); });
+document.getElementById('btn-sample').addEventListener('click', function () { input.value = SAMPLE; run('beautify'); });
+document.getElementById('btn-clear').addEventListener('click', function () {
+  input.value = '';
+  result.hidden = true;
+  showErr('');
+});
+document.getElementById('btn-copy').addEventListener('click', function (e) {
+  copyToClipboard(output.textContent, e.currentTarget);
+});
+document.getElementById('btn-download').addEventListener('click', function () {
+  if (!output.textContent) return;
+  var blob = new Blob([output.textContent], { type: 'application/json' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+tabText.addEventListener('click', function () { setView('text'); });
+tabTree.addEventListener('click', function () { setView('tree'); });
+optSort.addEventListener('change', function () { if (!result.hidden) run(lastMode); });
+optIndent.addEventListener('change', function () { if (!result.hidden) run(lastMode); });
+</script>
+</body>
+</html>
