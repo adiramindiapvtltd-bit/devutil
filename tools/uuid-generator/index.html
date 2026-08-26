@@ -205,6 +205,8 @@ document.getElementById('btn-download').addEventListener('click', function () {
 optUpper.addEventListener('change', render);
 optNoHyphen.addEventListener('change', render);
 optBraces.addEventListener('change', render);
+countInput.addEventListener('input', generate);
+versionSelect.addEventListener('change', generate);
 
 generate();
 </script>

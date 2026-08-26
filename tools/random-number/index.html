@@ -129,6 +129,10 @@ function generate() {
 
 document.getElementById('btn-generate').addEventListener('click', generate);
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
+minInput.addEventListener('input', generate);
+maxInput.addEventListener('input', generate);
+countInput.addEventListener('input', generate);
+optUnique.addEventListener('change', generate);
 generate();
 </script>
 </body>

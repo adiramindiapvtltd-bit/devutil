@@ -113,6 +113,7 @@ paletteEl.addEventListener('click', function (e) {
 
 document.getElementById('btn-generate').addEventListener('click', generate);
 document.getElementById('btn-copy-all').addEventListener('click', function (e) { copyToClipboard(currentColors.join(', '), e.currentTarget); });
+countInput.addEventListener('input', generate);
 
 generate();
 </script>
