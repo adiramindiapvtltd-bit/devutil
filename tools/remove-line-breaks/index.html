@@ -43,7 +43,6 @@
       <label class="opt"><input type="checkbox" id="opt-skip-empty" checked> Skip empty lines</label>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Remove line breaks</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div class="result" id="result" hidden>
@@ -82,13 +81,16 @@ var joiner = document.getElementById('joiner');
 var optSkipEmpty = document.getElementById('opt-skip-empty');
 
 function run() {
+  if (!input.value) { result.hidden = true; return; }
   var lines = input.value.split('\n');
   if (optSkipEmpty.checked) lines = lines.filter(function (l) { return l.trim() !== ''; });
   output.textContent = lines.join(joiner.value);
   result.hidden = false;
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
+joiner.addEventListener('change', run);
+optSkipEmpty.addEventListener('change', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

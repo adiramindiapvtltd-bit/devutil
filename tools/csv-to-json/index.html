@@ -34,7 +34,6 @@
       <label class="opt"><input type="checkbox" id="opt-numbers" checked> Convert numeric values</label>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Convert</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div id="err-slot"></div>
@@ -121,7 +120,8 @@ function run() {
   }
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
+optNumbers.addEventListener('change', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; showErr(''); });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

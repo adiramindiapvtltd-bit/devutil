@@ -36,7 +36,6 @@
       <label class="opt"><input type="checkbox" id="opt-blank"> Remove blank lines</label>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Trim</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div class="result" id="result" hidden>
@@ -76,6 +75,7 @@ var optCollapse = document.getElementById('opt-collapse');
 var optBlank = document.getElementById('opt-blank');
 
 function run() {
+  if (!input.value) { result.hidden = true; return; }
   var lines = input.value.split('\n');
   lines = lines.map(function (line) {
     var l = line;
@@ -88,7 +88,10 @@ function run() {
   result.hidden = false;
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
+optTrimLines.addEventListener('change', run);
+optCollapse.addEventListener('change', run);
+optBlank.addEventListener('change', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

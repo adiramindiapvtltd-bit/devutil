@@ -36,7 +36,6 @@
       <label class="opt"><input type="checkbox" id="opt-empty"> Remove empty lines</label>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Remove duplicates</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div class="result" id="result" hidden>
@@ -78,6 +77,7 @@ var optTrim = document.getElementById('opt-trim');
 var optEmpty = document.getElementById('opt-empty');
 
 function run() {
+  if (!input.value) { result.hidden = true; return; }
   var lines = input.value.split('\n');
   var seen = {};
   var out = [];
@@ -92,7 +92,10 @@ function run() {
   result.hidden = false;
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
+optCi.addEventListener('change', run);
+optTrim.addEventListener('change', run);
+optEmpty.addEventListener('change', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

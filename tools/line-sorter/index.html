@@ -44,7 +44,6 @@
       <label class="opt"><input type="checkbox" id="opt-ci" checked> Case-insensitive</label>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Sort</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div class="result" id="result" hidden>
@@ -83,6 +82,7 @@ var mode = document.getElementById('mode');
 var optCi = document.getElementById('opt-ci');
 
 function run() {
+  if (!input.value) { result.hidden = true; return; }
   var lines = input.value.split('\n');
   var m = mode.value;
   if (m === 'az' || m === 'za') {
@@ -113,7 +113,9 @@ function run() {
   result.hidden = false;
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
+mode.addEventListener('change', run);
+optCi.addEventListener('change', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

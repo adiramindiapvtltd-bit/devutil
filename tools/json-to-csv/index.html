@@ -31,7 +31,6 @@
       <textarea id="input" placeholder='[{"name":"Alice","age":30},{"name":"Bob","age":25}]'></textarea>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-run">Convert</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div id="err-slot"></div>
@@ -96,7 +95,7 @@ function run() {
   }
 }
 
-document.getElementById('btn-run').addEventListener('click', run);
+input.addEventListener('input', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; showErr(''); });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

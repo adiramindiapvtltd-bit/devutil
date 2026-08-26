@@ -35,7 +35,6 @@
       <textarea id="input" placeholder="name: example&#10;valid: true"></textarea>
     </div>
     <div class="actions">
-      <button class="btn" id="btn-convert">Convert</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
     <div id="err-slot"></div>
@@ -108,11 +107,12 @@ function setMode(newMode) {
   inputLabel.textContent = mode === 'y2j' ? 'YAML' : 'JSON';
   outputLabel.textContent = mode === 'y2j' ? 'JSON' : 'YAML';
   input.placeholder = mode === 'y2j' ? 'name: example\nvalid: true' : '{"name": "example", "valid": true}';
+  run();
 }
 
 tabY2j.addEventListener('click', function () { setMode('y2j'); });
 tabJ2y.addEventListener('click', function () { setMode('j2y'); });
-document.getElementById('btn-convert').addEventListener('click', run);
+input.addEventListener('input', run);
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; showErr(''); });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>
