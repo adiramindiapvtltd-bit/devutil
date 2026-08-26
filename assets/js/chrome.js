@@ -75,6 +75,36 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !navPanel.hidden) closeNav(); });
   }
 
+  // Line-number gutters for textareas (skips short single-line fields via data-plain,
+  // and skips textareas already managed by a page's own custom editor via .editor)
+  var areas = document.querySelectorAll('textarea:not([data-plain])');
+  for (var ai = 0; ai < areas.length; ai++) {
+    (function (ta) {
+      if (ta.closest('.editor') || ta.closest('.ta-wrap')) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'ta-wrap';
+      var gutter = document.createElement('div');
+      gutter.className = 'ta-gutter';
+      gutter.textContent = '1';
+      ta.parentNode.insertBefore(wrap, ta);
+      wrap.appendChild(gutter);
+      wrap.appendChild(ta);
+      ta.classList.add('ta-textarea');
+      ta.setAttribute('wrap', 'off');
+      if (!ta.hasAttribute('spellcheck')) ta.setAttribute('spellcheck', 'false');
+      function update() {
+        var lines = ta.value.split('\n').length;
+        var nums = '';
+        for (var i = 1; i <= lines; i++) nums += i + (i < lines ? '\n' : '');
+        if (gutter.textContent !== nums) gutter.textContent = nums;
+        gutter.scrollTop = ta.scrollTop;
+      }
+      ta.addEventListener('input', update);
+      ta.addEventListener('scroll', update);
+      update();
+    })(areas[ai]);
+  }
+
   // Homepage card rendering
   var catsEl = document.getElementById('tool-cats');
   if (catsEl) {

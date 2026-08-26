@@ -315,7 +315,7 @@ textarea, input[type="text"], input[type="search"], select {
   outline: none;
   transition: border-color .16s, box-shadow .16s, background .16s;
 }
-textarea { min-height: 150px; font-family: var(--mono); font-size: 14px; resize: vertical; }
+textarea { min-height: 260px; font-family: var(--mono); font-size: 14px; resize: vertical; }
 select {
   cursor: pointer;
   appearance: none;
@@ -326,6 +326,14 @@ select {
   background-size: 14px;
 }
 input:hover, textarea:hover, select:hover { border-color: var(--text-3); }
+
+.ta-wrap { display: flex; align-items: stretch; width: 100%; border: 1px solid var(--line-strong); border-radius: var(--r-sm); overflow: hidden; transition: border-color .16s, box-shadow .16s; }
+.ta-wrap:hover { border-color: var(--text-3); }
+.ta-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.tool[data-cat] .ta-wrap:focus-within { border-color: var(--hue, var(--accent)); box-shadow: 0 0 0 3px var(--tint, var(--accent-soft)); }
+.ta-gutter { flex: none; width: 44px; padding: 10px 8px 10px 0; text-align: right; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--muted); background: var(--surface); overflow: hidden; user-select: none; white-space: pre; box-sizing: border-box; }
+.ta-wrap .ta-textarea { flex: 1; min-width: 0; border: 0; border-radius: 0; box-shadow: none; outline: none; font-size: 13px; line-height: 1.55; white-space: pre; }
+.ta-wrap .ta-textarea:hover, .ta-wrap .ta-textarea:focus { border: 0; box-shadow: none; }
 
 input[type="range"] {
   width: 100%;

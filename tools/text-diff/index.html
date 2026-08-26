@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Text Diff Checker Online — Free | DevUtil</title>
-<meta name="description" content="Free online text diff checker. Compare two blocks of text and highlight the line-by-line differences.">
+<meta name="description" content="Free online text and code diff checker. Compare two blocks of text side by side with line numbers and highlighted changes.">
 <link rel="canonical" href="https://example.com/tools/text-diff/">
 <script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
 <meta name="theme-color" content="#eef1f6">
@@ -13,11 +13,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/css/style.css">
 <style>
-.diff-view { margin-top: 14px; padding: 4px 0; background: var(--surface); border-radius: var(--r-sm); overflow: auto; max-height: 420px; font-family: var(--mono); font-size: 13px; }
-.diff-line { display: flex; padding: 1px 12px; white-space: pre-wrap; word-break: break-word; }
-.diff-line.added { background: color-mix(in srgb, var(--good) 14%, transparent); }
-.diff-line.removed { background: color-mix(in srgb, var(--bad) 14%, transparent); }
-.diff-line .marker { flex: none; width: 18px; opacity: .7; }
+.diff-toolbar { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+.diff-toolbar .stats { font-size: 12.5px; color: var(--muted); display: flex; gap: 12px; }
+.diff-toolbar .stats .add { color: var(--good); }
+.diff-toolbar .stats .rem { color: var(--bad); }
+.diff-editor { margin-top: 14px; border: 1px solid var(--line); border-radius: var(--r-sm); overflow: auto; max-height: 640px; background: var(--surface); }
+.diff-heads { display: flex; position: sticky; top: 0; z-index: 1; background: var(--surface); border-bottom: 1px solid var(--line); font-size: 12.5px; font-weight: 600; }
+.diff-heads span { flex: 1 1 50%; padding: 8px 10px; }
+.diff-heads span:first-child { border-right: 1px solid var(--line); }
+.diff-row { display: flex; font-family: var(--mono); font-size: 13px; line-height: 1.55; }
+.diff-half { flex: 1 1 50%; display: flex; min-width: 0; }
+.diff-half.a { border-right: 1px solid var(--line); }
+.diff-half .num { flex: none; width: 42px; text-align: right; padding: 0 8px 0 0; opacity: .45; user-select: none; }
+.diff-half .code { flex: 1; min-width: 0; padding: 0 10px 0 4px; white-space: pre-wrap; word-break: break-word; }
+.diff-half.empty .code { opacity: .35; }
+.diff-half.t-removed { background: color-mix(in srgb, var(--bad) 14%, transparent); }
+.diff-half.t-added { background: color-mix(in srgb, var(--good) 14%, transparent); }
+.diff-half.t-blank { background: repeating-linear-gradient(135deg, transparent, transparent 6px, color-mix(in srgb, var(--line) 60%, transparent) 6px, color-mix(in srgb, var(--line) 60%, transparent) 7px); }
+.diff-empty-msg { padding: 24px; text-align: center; color: var(--muted); font-size: 13.5px; }
+.editor { display: flex; align-items: stretch; border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden; height: 420px; }
+.editor-gutter { flex: none; width: 44px; padding: 10px 8px 10px 0; text-align: right; font-family: var(--mono); font-size: 13px; line-height: 1.55; color: var(--muted); background: var(--surface); overflow: hidden; user-select: none; white-space: pre; height: 100%; box-sizing: border-box; }
+.editor-textarea { flex: 1; min-width: 0; height: 100%; box-sizing: border-box; border: 0; border-radius: 0; outline: 0; resize: none; padding: 10px 10px; font-family: var(--mono); font-size: 13px; line-height: 1.55; white-space: pre; overflow: auto; background: transparent; }
 </style>
 </head>
 <body>
@@ -29,19 +45,40 @@
   <p class="crumbs"><a href="/">All tools</a><span class="sep">/</span><span class="cat-tag" data-cat="Text">Text Tools</span></p>
   <div class="page-head">
     <h1>Text Diff Checker</h1>
-    <p class="lede">Compare two blocks of text and see line-by-line differences.</p>
+    <p class="lede">Compare two blocks of text or code side by side, with line numbers and highlighted changes.</p>
   </div>
 
   <div class="card tool" data-cat="Text">
     <div class="grid2">
-      <div class="field"><label for="input-a">Original</label><textarea id="input-a" style="min-height:160px;"></textarea></div>
-      <div class="field"><label for="input-b">Changed</label><textarea id="input-b" style="min-height:160px;"></textarea></div>
+      <div class="field">
+        <label for="input-a">Original</label>
+        <div class="editor">
+          <div class="editor-gutter" id="gutter-a">1</div>
+          <textarea id="input-a" class="editor-textarea" spellcheck="false" wrap="off"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label for="input-b">Changed</label>
+        <div class="editor">
+          <div class="editor-gutter" id="gutter-b">1</div>
+          <textarea id="input-b" class="editor-textarea" spellcheck="false" wrap="off"></textarea>
+        </div>
+      </div>
     </div>
     <div class="actions">
       <button class="btn" id="btn-compare">Compare</button>
       <button class="btn ghost" id="btn-clear">Clear</button>
     </div>
-    <div class="diff-view" id="diff-view" hidden></div>
+    <div class="diff-toolbar" id="toolbar" hidden>
+      <div class="stats">
+        <span class="add" id="stat-add">+0</span>
+        <span class="rem" id="stat-rem">-0</span>
+      </div>
+    </div>
+    <div class="diff-editor" id="diff-editor" hidden>
+      <div class="diff-heads"><span>Original</span><span>Changed</span></div>
+      <div id="diff-rows"></div>
+    </div>
   </div>
 
   <details class="guide">
@@ -50,9 +87,10 @@
       How this works &amp; FAQ
     </summary>
     <div class="guide-body">
-      <div class="content"><p>Paste the original text on the left and the changed version on the right, then click Compare. Removed lines are highlighted in red, added lines in green, unchanged lines are shown plainly.</p></div>
+      <div class="content"><p>Paste the original text or code on the left and the changed version on the right, then click Compare. The two versions line up side by side with line numbers: removed lines are highlighted in red on the left, added lines in green on the right, and unchanged lines line up plainly on both sides.</p></div>
       <div class="faqs">
-        <details class="faq"><summary>Does this diff word-by-word?</summary><p>No, it compares line by line — a single changed word will mark the whole line as removed and re-added.</p></details>
+        <details class="faq"><summary>Does this diff word-by-word?</summary><p>No, it compares line by line — a single changed word will mark the whole line as removed on the left and re-added on the right.</p></details>
+        <details class="faq"><summary>Can I compare code, not just plain text?</summary><p>Yes — it works on any line-based text, including source code, config files, JSON, or logs.</p></details>
       </div>
     </div>
   </details>
@@ -64,9 +102,28 @@
 <script>
 var inputA = document.getElementById('input-a');
 var inputB = document.getElementById('input-b');
-var diffView = document.getElementById('diff-view');
+var toolbar = document.getElementById('toolbar');
 
-function diffLines(a, b) {
+function syncGutter(textarea, gutter) {
+  function update() {
+    var lines = textarea.value.split('\n').length;
+    var nums = '';
+    for (var i = 1; i <= lines; i++) nums += i + (i < lines ? '\n' : '');
+    if (gutter.textContent !== nums) gutter.textContent = nums;
+    gutter.scrollTop = textarea.scrollTop;
+  }
+  textarea.addEventListener('input', update);
+  textarea.addEventListener('scroll', update);
+  return update;
+}
+var updateGutterA = syncGutter(inputA, document.getElementById('gutter-a'));
+var updateGutterB = syncGutter(inputB, document.getElementById('gutter-b'));
+var diffEditor = document.getElementById('diff-editor');
+var diffRows = document.getElementById('diff-rows');
+var statAdd = document.getElementById('stat-add');
+var statRem = document.getElementById('stat-rem');
+
+function diffOps(a, b) {
   var linesA = a.split('\n'), linesB = b.split('\n');
   var n = linesA.length, m = linesB.length;
   var dp = [];
@@ -76,32 +133,73 @@ function diffLines(a, b) {
       dp[i][j] = linesA[i] === linesB[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
     }
   }
-  var result = [];
+  var ops = [];
   i = 0; var jj = 0;
   while (i < n && jj < m) {
-    if (linesA[i] === linesB[jj]) { result.push({ type: 'same', text: linesA[i] }); i++; jj++; }
-    else if (dp[i + 1][jj] >= dp[i][jj + 1]) { result.push({ type: 'removed', text: linesA[i] }); i++; }
-    else { result.push({ type: 'added', text: linesB[jj] }); jj++; }
+    if (linesA[i] === linesB[jj]) { ops.push({ type: 'same', text: linesA[i] }); i++; jj++; }
+    else if (dp[i + 1][jj] >= dp[i][jj + 1]) { ops.push({ type: 'removed', text: linesA[i] }); i++; }
+    else { ops.push({ type: 'added', text: linesB[jj] }); jj++; }
   }
-  while (i < n) { result.push({ type: 'removed', text: linesA[i] }); i++; }
-  while (jj < m) { result.push({ type: 'added', text: linesB[jj] }); jj++; }
-  return result;
+  while (i < n) { ops.push({ type: 'removed', text: linesA[i] }); i++; }
+  while (jj < m) { ops.push({ type: 'added', text: linesB[jj] }); jj++; }
+  return ops;
+}
+
+function buildRows(ops) {
+  var rows = [], aNum = 0, bNum = 0, i = 0;
+  while (i < ops.length) {
+    if (ops[i].type === 'same') {
+      aNum++; bNum++;
+      rows.push({ a: { num: aNum, text: ops[i].text, type: 'same' }, b: { num: bNum, text: ops[i].text, type: 'same' } });
+      i++;
+    } else {
+      var removed = [], added = [];
+      while (i < ops.length && ops[i].type === 'removed') { removed.push(ops[i].text); i++; }
+      while (i < ops.length && ops[i].type === 'added') { added.push(ops[i].text); i++; }
+      var max = Math.max(removed.length, added.length);
+      for (var k = 0; k < max; k++) {
+        var left = k < removed.length ? { num: ++aNum, text: removed[k], type: 'removed' } : null;
+        var right = k < added.length ? { num: ++bNum, text: added[k], type: 'added' } : null;
+        rows.push({ a: left, b: right });
+      }
+    }
+  }
+  return rows;
 }
 
 function escapeHtml(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
 
+function halfHtml(side, cls) {
+  if (!side) return '<div class="diff-half ' + cls + ' empty t-blank"><span class="num"></span><span class="code"></span></div>';
+  var typeCls = side.type === 'removed' ? 't-removed' : side.type === 'added' ? 't-added' : '';
+  return '<div class="diff-half ' + cls + ' ' + typeCls + '"><span class="num">' + side.num + '</span><span class="code">' + (escapeHtml(side.text) || ' ') + '</span></div>';
+}
+
 function compare() {
-  var diff = diffLines(inputA.value, inputB.value);
-  diffView.innerHTML = diff.map(function (d) {
-    var marker = d.type === 'added' ? '+' : d.type === 'removed' ? '-' : ' ';
-    return '<div class="diff-line ' + d.type + '"><span class="marker">' + marker + '</span><span>' + (escapeHtml(d.text) || ' ') + '</span></div>';
+  var a = inputA.value, b = inputB.value;
+  if (!a.trim() && !b.trim()) {
+    toolbar.hidden = true; diffEditor.hidden = true; diffRows.innerHTML = '';
+    return;
+  }
+  var ops = diffOps(a, b);
+  var rows = buildRows(ops);
+  var added = 0, removed = 0;
+  diffRows.innerHTML = rows.map(function (r) {
+    if (r.a && r.a.type === 'removed') removed++;
+    if (r.b && r.b.type === 'added') added++;
+    return '<div class="diff-row">' + halfHtml(r.a, 'a') + halfHtml(r.b, 'b') + '</div>';
   }).join('');
-  diffView.hidden = false;
+  statAdd.textContent = '+' + added;
+  statRem.textContent = '-' + removed;
+  toolbar.hidden = false;
+  diffEditor.hidden = false;
 }
 
 document.getElementById('btn-compare').addEventListener('click', compare);
 document.getElementById('btn-clear').addEventListener('click', function () {
-  inputA.value = ''; inputB.value = ''; diffView.hidden = true; diffView.innerHTML = '';
+  inputA.value = ''; inputB.value = '';
+  updateGutterA(); updateGutterB();
+  toolbar.hidden = true; diffEditor.hidden = true; diffRows.innerHTML = '';
 });
 </script>
 </body>
