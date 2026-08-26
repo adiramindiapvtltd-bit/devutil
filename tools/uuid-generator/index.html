@@ -37,6 +37,7 @@
       <div class="field" style="max-width:110px;">
         <label for="count">How many?</label>
         <input type="text" id="count" value="5" inputmode="numeric">
+        <span class="field-hint" id="count-hint" hidden></span>
       </div>
       <div class="field" style="max-width:190px;">
         <label for="opt-version">Version</label>
@@ -152,7 +153,13 @@ var optUpper = document.getElementById('opt-upper');
 var optNoHyphen = document.getElementById('opt-nohyphen');
 var optBraces = document.getElementById('opt-braces');
 var statsEl = document.getElementById('stats');
+var countHint = document.getElementById('count-hint');
 var currentIds = [];
+
+function showCountHint(msg) {
+  countHint.textContent = msg || '';
+  countHint.hidden = !msg;
+}
 
 var copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
@@ -173,9 +180,13 @@ function render() {
 }
 
 function generate() {
-  var n = parseInt(countInput.value, 10);
+  var raw = parseInt(countInput.value, 10);
+  var n = raw;
   if (isNaN(n) || n < 1) n = 1;
   if (n > 1000) n = 1000;
+  if (raw > 1000) showCountHint('Capped at 1000 max');
+  else if (!isNaN(raw) && raw < 1) showCountHint('Needs at least 1');
+  else showCountHint('');
   if (String(n) !== countInput.value) countInput.value = n;
   var gen = versionSelect.value === 'v7' ? uuidv7 : versionSelect.value === 'nil' ? uuidNil : uuidv4;
   currentIds = [];

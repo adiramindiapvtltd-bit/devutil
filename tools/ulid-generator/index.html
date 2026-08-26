@@ -30,6 +30,7 @@
       <div class="field" style="max-width:110px;">
         <label for="count">How many?</label>
         <input type="text" id="count" value="5" inputmode="numeric">
+        <span class="field-hint" id="count-hint" hidden></span>
       </div>
       <button class="btn" id="btn-generate">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
@@ -91,7 +92,13 @@ function ulid() {
 var listEl = document.getElementById('ulid-list');
 var countInput = document.getElementById('count');
 var statsEl = document.getElementById('stats');
+var countHint = document.getElementById('count-hint');
 var currentIds = [];
+
+function showCountHint(msg) {
+  countHint.textContent = msg || '';
+  countHint.hidden = !msg;
+}
 var copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 
 function render() {
@@ -102,9 +109,13 @@ function render() {
 }
 
 function generate() {
-  var n = parseInt(countInput.value, 10);
+  var raw = parseInt(countInput.value, 10);
+  var n = raw;
   if (isNaN(n) || n < 1) n = 1;
   if (n > 1000) n = 1000;
+  if (raw > 1000) showCountHint('Capped at 1000 max');
+  else if (!isNaN(raw) && raw < 1) showCountHint('Needs at least 1');
+  else showCountHint('');
   if (String(n) !== countInput.value) countInput.value = n;
   currentIds = [];
   for (var i = 0; i < n; i++) currentIds.push(ulid());

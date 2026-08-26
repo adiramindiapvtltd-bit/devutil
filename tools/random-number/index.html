@@ -38,6 +38,7 @@
       <div class="field" style="max-width:100px;">
         <label for="count">How many?</label>
         <input type="text" id="count" value="1" inputmode="numeric">
+        <span class="field-hint" id="count-hint" hidden></span>
       </div>
     </div>
     <div class="actions opts">
@@ -83,8 +84,10 @@ var optUnique = document.getElementById('opt-unique');
 var output = document.getElementById('output');
 var result = document.getElementById('result');
 var errSlot = document.getElementById('err-slot');
+var countHint = document.getElementById('count-hint');
 
 function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
+function showCountHint(msg) { countHint.textContent = msg || ''; countHint.hidden = !msg; }
 
 function randomInt(min, max) {
   var range = max - min + 1;
@@ -96,7 +99,11 @@ function randomInt(min, max) {
 function generate() {
   var min = parseInt(minInput.value, 10);
   var max = parseInt(maxInput.value, 10);
-  var n = Math.max(1, Math.min(1000, parseInt(countInput.value, 10) || 1));
+  var rawCount = parseInt(countInput.value, 10);
+  var n = Math.max(1, Math.min(1000, rawCount || 1));
+  if (rawCount > 1000) showCountHint('Capped at 1000 max');
+  else if (!isNaN(rawCount) && rawCount < 1) showCountHint('Needs at least 1');
+  else showCountHint('');
   if (String(n) !== countInput.value) countInput.value = n;
 
   if (isNaN(min) || isNaN(max) || min > max) {
