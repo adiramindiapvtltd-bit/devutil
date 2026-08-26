@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About | DevUtil</title>
 <meta name="description" content="DevUtil is a free collection of browser-based developer tools — no signup, no data collection.">
-<link rel="canonical" href="https://example.com/about.html">
+<link rel="canonical" href="https://devutil.adiram.net/about.html">
 <script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
 <meta name="theme-color" content="#eef1f6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,9 +23,22 @@
     <h1>About DevUtil</h1>
   </div>
   <div class="content">
-    <p>DevUtil is a free collection of small, single-purpose developer tools — JSON formatting, encoding/decoding, ID generation, and more. Every tool runs entirely in your browser: nothing you paste or generate is uploaded to a server.</p>
-    <p>The goal is simple: fast, ad-supported utilities that don't require an account and don't get in your way.</p>
-    <p>Have a tool you'd like to see added? <a href="/contact.html">Get in touch</a>.</p>
+    <p>DevUtil is built and published by Adiram, an independent software studio building Android and web products people can trust. It exists for one reason: to give developers fast, single-purpose tools — JSON formatting, encoding/decoding, ID generation, and more — without signup friction or a wall of ads to click through first.</p>
+
+    <h2>How the tools are built</h2>
+    <p>Every tool is written directly against the relevant spec or standard, not copied from another site — RFC 4648 for Base32/Base64, RFC 9562 for UUIDs, the WCAG contrast formula, and so on. Where a format has edge cases (escaped quotes in CSV, ambiguous timestamps, malformed JSON), the tool is built to handle them correctly and say clearly when input is invalid, rather than fail silently.</p>
+
+    <h2>How results are checked</h2>
+    <p>Each tool is verified against reference implementations and known test vectors before shipping — for example, MD5 output checked against the RFC test vectors, UUID v7 checked for correct time-ordering, and round-trip conversions (RGB↔HSL, YAML↔JSON) checked for lossless accuracy. If you find a result you believe is wrong, tell us with the input you used and we will investigate and correct it.</p>
+
+    <h2>Privacy by design</h2>
+    <p>All processing runs entirely in your browser using JavaScript. The text, code, and files you paste or upload are never sent to our servers, because there is no server-side processing. See our <a href="/privacy.html">privacy policy</a> for what is collected.</p>
+
+    <h2>How the site is funded</h2>
+    <p>There is no charge to use the tools. Running costs are covered by display advertising. Ads never alter a tool's output.</p>
+
+    <h2>Contact</h2>
+    <p>Corrections, requests for new tools, or anything else: <a href="/contact.html">get in touch</a>.</p>
   </div>
 </main>
 
