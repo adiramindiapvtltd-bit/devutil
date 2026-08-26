@@ -302,6 +302,7 @@ h3 { font-size: 16px; margin: 28px 0 8px; letter-spacing: -.015em; }
 @media (max-width: 560px) { .tool { padding: 18px; } }
 
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.actions .field { margin-bottom: 0; }
 
 textarea, input[type="text"], input[type="search"], select {
   width: 100%;

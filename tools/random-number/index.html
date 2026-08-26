@@ -97,6 +97,7 @@ function generate() {
   var min = parseInt(minInput.value, 10);
   var max = parseInt(maxInput.value, 10);
   var n = Math.max(1, Math.min(1000, parseInt(countInput.value, 10) || 1));
+  if (String(n) !== countInput.value) countInput.value = n;
 
   if (isNaN(min) || isNaN(max) || min > max) {
     showErr('Min must be a number less than or equal to Max.');

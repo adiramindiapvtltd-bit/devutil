@@ -88,6 +88,7 @@ var currentColors = [];
 
 function generate() {
   var n = Math.max(2, Math.min(12, parseInt(countInput.value, 10) || 5));
+  if (String(n) !== countInput.value) countInput.value = n;
   var baseHue = Math.random() * 360;
   currentColors = [];
   for (var i = 0; i < n; i++) {

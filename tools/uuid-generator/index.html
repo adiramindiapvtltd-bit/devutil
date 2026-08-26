@@ -176,6 +176,7 @@ function generate() {
   var n = parseInt(countInput.value, 10);
   if (isNaN(n) || n < 1) n = 1;
   if (n > 1000) n = 1000;
+  if (String(n) !== countInput.value) countInput.value = n;
   var gen = versionSelect.value === 'v7' ? uuidv7 : versionSelect.value === 'nil' ? uuidNil : uuidv4;
   currentIds = [];
   for (var i = 0; i < n; i++) currentIds.push(gen());
