@@ -98,7 +98,9 @@ function minifyCss(css) {
     .trim();
 }
 
+var lastMode = 'beautify';
 function run(mode) {
+  lastMode = mode;
   var val = input.value;
   if (!val.trim()) { result.hidden = true; return; }
   var text = mode === 'minify' ? minifyCss(val) : beautifyCss(val);
@@ -107,8 +109,16 @@ function run(mode) {
   result.hidden = false;
 }
 
-document.getElementById('btn-beautify').addEventListener('click', function () { run('beautify'); });
-document.getElementById('btn-minify').addEventListener('click', function () { run('minify'); });
+var btnBeautify = document.getElementById('btn-beautify');
+var btnMinify = document.getElementById('btn-minify');
+function setMode(mode) {
+  btnBeautify.classList.toggle('ghost', mode !== 'beautify');
+  btnMinify.classList.toggle('ghost', mode !== 'minify');
+  run(mode);
+}
+btnBeautify.addEventListener('click', function () { setMode('beautify'); });
+btnMinify.addEventListener('click', function () { setMode('minify'); });
+input.addEventListener('input', function () { run(lastMode); });
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

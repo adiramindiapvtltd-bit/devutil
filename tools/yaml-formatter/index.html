@@ -77,7 +77,9 @@ var errSlot = document.getElementById('err-slot');
 
 function showErr(msg) { errSlot.innerHTML = msg ? '<div class="err">' + msg + '</div>' : ''; }
 
+var lastMode = 'yaml';
 function run(mode) {
+  lastMode = mode;
   var val = input.value;
   if (!val.trim()) { result.hidden = true; showErr(''); return; }
   try {
@@ -91,8 +93,16 @@ function run(mode) {
   }
 }
 
-document.getElementById('btn-format').addEventListener('click', function () { run('yaml'); });
-document.getElementById('btn-tojson').addEventListener('click', function () { run('json'); });
+var btnFormat = document.getElementById('btn-format');
+var btnToJson = document.getElementById('btn-tojson');
+function setMode(mode) {
+  btnFormat.classList.toggle('ghost', mode !== 'yaml');
+  btnToJson.classList.toggle('ghost', mode !== 'json');
+  run(mode);
+}
+btnFormat.addEventListener('click', function () { setMode('yaml'); });
+btnToJson.addEventListener('click', function () { setMode('json'); });
+input.addEventListener('input', function () { run(lastMode); });
 document.getElementById('btn-clear').addEventListener('click', function () { input.value = ''; result.hidden = true; showErr(''); });
 document.getElementById('btn-copy').addEventListener('click', function (e) { copyToClipboard(output.textContent, e.currentTarget); });
 </script>

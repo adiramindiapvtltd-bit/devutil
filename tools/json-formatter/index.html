@@ -93,7 +93,7 @@
     </summary>
     <div class="guide-body">
       <div class="content">
-        <p>Paste any JSON text into the box above, then click Beautify to pretty-print it, or Minify to compress it to a single line. Switch the output to Tree view to explore nested objects and arrays with collapsible nodes — handy for large payloads. Turn on Sort keys to alphabetize object keys, and pick 2-space, 4-space, or tab indentation. If the JSON is invalid, an error message shows you what's wrong and where.</p>
+        <p>Paste any JSON text into the box above and it's pretty-printed instantly. Click Minify to switch to a single-line, compressed output — further edits keep updating live in whichever mode is active. Switch the output to Tree view to explore nested objects and arrays with collapsible nodes — handy for large payloads. Turn on Sort keys to alphabetize object keys, and pick 2-space, 4-space, or tab indentation. If the JSON is invalid, an error message shows you what's wrong and where.</p>
       </div>
       <div class="faqs">
         <details class="faq">
@@ -218,9 +218,17 @@ function run(mode) {
   }
 }
 
-document.getElementById('btn-beautify').addEventListener('click', function () { run('beautify'); });
-document.getElementById('btn-minify').addEventListener('click', function () { run('minify'); });
-document.getElementById('btn-sample').addEventListener('click', function () { input.value = SAMPLE; run('beautify'); });
+var btnBeautify = document.getElementById('btn-beautify');
+var btnMinify = document.getElementById('btn-minify');
+function setMode(mode) {
+  btnBeautify.classList.toggle('ghost', mode !== 'beautify');
+  btnMinify.classList.toggle('ghost', mode !== 'minify');
+  run(mode);
+}
+btnBeautify.addEventListener('click', function () { setMode('beautify'); });
+btnMinify.addEventListener('click', function () { setMode('minify'); });
+input.addEventListener('input', function () { run(lastMode); });
+document.getElementById('btn-sample').addEventListener('click', function () { input.value = SAMPLE; setMode('beautify'); });
 document.getElementById('btn-clear').addEventListener('click', function () {
   input.value = '';
   result.hidden = true;
