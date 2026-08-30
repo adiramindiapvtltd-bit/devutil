@@ -24,6 +24,7 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Timestamp / Epoch Converter","url":"https://devutil.adiram.net/tools/timestamp-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online Unix timestamp converter. Convert between Unix epoch timestamps and readable dates instantly.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Timestamp / Epoch Converter","item":"https://devutil.adiram.net/tools/timestamp-converter/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a Unix timestamp (epoch time)?","acceptedAnswer":{"@type":"Answer","text":"A Unix timestamp, or epoch time, is the number of seconds that have elapsed since 00:00:00 UTC on January 1, 1970, ignoring leap seconds. It's a compact, timezone-free way to store a point in time."}},{"@type":"Question","name":"How do I convert epoch time to a readable date?","acceptedAnswer":{"@type":"Answer","text":"Paste the number into the timestamp field above — the local time, UTC time, and ISO 8601 format appear instantly. Turn on \"Milliseconds\" if your value has 13 digits instead of 10."}},{"@type":"Question","name":"Is Unix time measured in seconds or milliseconds?","acceptedAnswer":{"@type":"Answer","text":"Traditionally seconds (10 digits for current dates), but many APIs and JavaScript's Date.now() use milliseconds (13 digits). Toggle the \"Milliseconds\" checkbox to match your value."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -72,7 +73,12 @@
       How this works &amp; FAQ
     </summary>
     <div class="guide-body">
-      <div class="content"><p>Enter a Unix timestamp above to convert it to a date, or enter a date below to get its timestamp. Toggle "Milliseconds" if your timestamp is in milliseconds rather than seconds (13 digits vs 10).</p></div>
+      <div class="content"><p>Enter a Unix timestamp above to convert epoch time to a date, or enter a date below to get its timestamp. Toggle "Milliseconds" if your timestamp is in milliseconds rather than seconds (13 digits vs 10).</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>What is a Unix timestamp (epoch time)?</summary><p>A Unix timestamp, or epoch time, is the number of seconds that have elapsed since 00:00:00 UTC on January 1, 1970, ignoring leap seconds. It's a compact, timezone-free way to store a point in time.</p></details>
+        <details class="faq"><summary>How do I convert epoch time to a readable date?</summary><p>Paste the number into the timestamp field above — the local time, UTC time, and ISO 8601 format appear instantly. Turn on "Milliseconds" if your value has 13 digits instead of 10.</p></details>
+        <details class="faq"><summary>Is Unix time measured in seconds or milliseconds?</summary><p>Traditionally seconds (10 digits for current dates), but many APIs and JavaScript's <code>Date.now()</code> use milliseconds (13 digits). Toggle the "Milliseconds" checkbox to match your value.</p></details>
+      </div>
     </div>
   </details>
 </main>

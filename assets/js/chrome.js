@@ -131,4 +131,30 @@
     window.renderToolCats = renderCats;
     renderCats(TOOLS);
   }
+
+  // Related tools: cross-links to other tools in the same category, appended
+  // to every /tools/<slug>/ page for internal linking + discovery.
+  var slugMatch = location.pathname.match(/^\/tools\/([^/]+)\/?$/);
+  if (slugMatch) {
+    var current = TOOLS.filter(function (t) { return t.slug === slugMatch[1]; })[0];
+    var mainEl = document.querySelector('main.page');
+    if (current && mainEl) {
+      var peers = TOOLS.filter(function (t) { return t.category === current.category && t.slug !== current.slug; });
+      var picks = [];
+      var startIdx = TOOLS.indexOf(current);
+      for (var pi = 0; pi < peers.length && picks.length < 4; pi++) {
+        picks.push(peers[(startIdx + pi) % peers.length]);
+      }
+      if (picks.length) {
+        var section = document.createElement('section');
+        section.className = 'related';
+        section.innerHTML = '<h2>Related tools</h2><div class="related-links">' +
+          picks.map(function (t) {
+            return '<a href="/tools/' + t.slug + '/">' + iconSvg(t.icon) + t.shortName + '</a>';
+          }).join('') +
+          '</div>';
+        mainEl.appendChild(section);
+      }
+    }
+  }
 })();

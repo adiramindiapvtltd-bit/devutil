@@ -24,6 +24,7 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Byte Size Converter","url":"https://devutil.adiram.net/tools/byte-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online byte size converter. Convert between bits, bytes, KB, MB, GB, and TB instantly.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Byte Size Converter","item":"https://devutil.adiram.net/tools/byte-converter/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many bits are in a byte?","acceptedAnswer":{"@type":"Answer","text":"There are 8 bits in a byte. Type a value into the Bits or Bytes field above and every other unit (KB, MB, GB, TB) updates automatically."}},{"@type":"Question","name":"What's the difference between KB and KiB (1000 vs 1024)?","acceptedAnswer":{"@type":"Answer","text":"1024-based units (KiB, MiB, GiB) match how operating systems typically report file sizes, using powers of 1024. 1000-based units (KB, MB, GB) match how storage manufacturers advertise capacity, using powers of 1000. Switch between them with the toggle above."}},{"@type":"Question","name":"How do I convert bytes to KB or MB?","acceptedAnswer":{"@type":"Answer","text":"Enter the byte value into the Bytes field — the KB, MB, GB, and TB fields update instantly using whichever base (1000 or 1024) you've selected."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -57,7 +58,12 @@
       How this works &amp; FAQ
     </summary>
     <div class="guide-body">
-      <div class="content"><p>Type a value into any field and the rest update. 1024-based matches how operating systems typically report file sizes; 1000-based matches how storage manufacturers advertise capacity.</p></div>
+      <div class="content"><p>Type a value into any field — bits, bytes, KB, MB, GB, or TB — and the rest update instantly. 1024-based matches how operating systems typically report file sizes; 1000-based matches how storage manufacturers advertise capacity.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>How many bits are in a byte?</summary><p>There are 8 bits in a byte. Type a value into the Bits or Bytes field above and every other unit (KB, MB, GB, TB) updates automatically.</p></details>
+        <details class="faq"><summary>What's the difference between KB and KiB (1000 vs 1024)?</summary><p>1024-based units (KiB, MiB, GiB) match how operating systems typically report file sizes, using powers of 1024. 1000-based units (KB, MB, GB) match how storage manufacturers advertise capacity, using powers of 1000. Switch between them with the toggle above.</p></details>
+        <details class="faq"><summary>How do I convert bytes to KB or MB?</summary><p>Enter the byte value into the Bytes field — the KB, MB, GB, and TB fields update instantly using whichever base (1000 or 1024) you've selected.</p></details>
+      </div>
     </div>
   </details>
 </main>

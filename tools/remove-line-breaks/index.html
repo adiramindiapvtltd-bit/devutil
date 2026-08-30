@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Remove Line Breaks Online — Free | DevUtil</title>
-<meta name="description" content="Free online tool to remove line breaks. Join multi-line text into a single line or paragraph instantly.">
+<title>Remove Line Breaks Online — Line Break Remover | DevUtil</title>
+<meta name="description" content="Free online line break remover. Strip newlines and CRLF breaks from pasted text and join it into one line or paragraph — nothing leaves your browser.">
 <link rel="canonical" href="https://devutil.adiram.net/tools/remove-line-breaks/">
 <script>(function(){try{var d=localStorage.getItem('devutil.theme')==='dark';document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
 <meta name="theme-color" content="#eef1f6">
@@ -14,16 +14,17 @@
 <link rel="stylesheet" href="/assets/css/style.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DevUtil">
-<meta property="og:title" content="Remove Line Breaks Online — Free | DevUtil">
-<meta property="og:description" content="Free online tool to remove line breaks. Join multi-line text into a single line or paragraph instantly.">
+<meta property="og:title" content="Remove Line Breaks Online — Line Break Remover | DevUtil">
+<meta property="og:description" content="Free online line break remover. Strip newlines and CRLF breaks from pasted text and join it into one line or paragraph — nothing leaves your browser.">
 <meta property="og:url" content="https://devutil.adiram.net/tools/remove-line-breaks/">
 <meta property="og:image" content="https://devutil.adiram.net/og-image.svg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Remove Line Breaks Online — Free | DevUtil">
-<meta name="twitter:description" content="Free online tool to remove line breaks. Join multi-line text into a single line or paragraph instantly.">
+<meta name="twitter:title" content="Remove Line Breaks Online — Line Break Remover | DevUtil">
+<meta name="twitter:description" content="Free online line break remover. Strip newlines and CRLF breaks from pasted text and join it into one line or paragraph — nothing leaves your browser.">
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Remove Line Breaks","url":"https://devutil.adiram.net/tools/remove-line-breaks/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online tool to remove line breaks. Join multi-line text into a single line or paragraph instantly.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Remove Line Breaks","url":"https://devutil.adiram.net/tools/remove-line-breaks/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online line break remover. Strip newlines and CRLF breaks from pasted text and join it into one line or paragraph.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Remove Line Breaks","item":"https://devutil.adiram.net/tools/remove-line-breaks/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I remove line breaks from text online?","acceptedAnswer":{"@type":"Answer","text":"Paste your text into the box above, choose what to join lines with (a space, nothing, a comma, or a pipe), and the line breaks are stripped instantly — no upload or signup needed."}},{"@type":"Question","name":"What's the difference between a line break, a newline, and a carriage return?","acceptedAnswer":{"@type":"Answer","text":"They all mean roughly the same thing: the character(s) that end a line. Unix/macOS text uses a single newline (LF, \\n); Windows text uses a carriage return plus newline (CRLF, \\r\\n). This tool handles both automatically."}},{"@type":"Question","name":"Can I remove line breaks but keep paragraphs separate?","acceptedAnswer":{"@type":"Answer","text":"Yes — set \"Join lines with\" to a comma or pipe to keep visual separation between what were separate lines, or turn off \"Skip empty lines\" to preserve blank-line paragraph breaks."}},{"@type":"Question","name":"Does this work with line breaks copied from Windows or Excel?","acceptedAnswer":{"@type":"Answer","text":"Yes. Windows-style CRLF breaks, Unix-style LF breaks, and text pasted from spreadsheets all get normalized and removed the same way."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -77,7 +78,16 @@
       How this works &amp; FAQ
     </summary>
     <div class="guide-body">
-      <div class="content"><p>Paste multi-line text, choose what to join lines with, and click Remove line breaks. Handy for turning a pasted list or copied paragraph back into one line.</p></div>
+      <div class="content">
+        <p>Paste multi-line text above and pick what to join lines with — the line breaks disappear as you type, no button click needed. Handy for turning a pasted list, a copied paragraph, or export data with stray newlines back into one clean line.</p>
+        <p>This line break remover strips both Unix-style (<code>\n</code>) and Windows-style (<code>\r\n</code>) breaks, so it works the same whether the text came from a code editor, a spreadsheet, an email, or a PDF.</p>
+      </div>
+      <div class="faqs">
+        <details class="faq"><summary>How do I remove line breaks from text online?</summary><p>Paste your text into the box above, choose what to join lines with (a space, nothing, a comma, or a pipe), and the line breaks are stripped instantly — no upload or signup needed.</p></details>
+        <details class="faq"><summary>What's the difference between a line break, a newline, and a carriage return?</summary><p>They all mean roughly the same thing: the character(s) that end a line. Unix/macOS text uses a single newline (LF, <code>\n</code>); Windows text uses a carriage return plus newline (CRLF, <code>\r\n</code>). This tool handles both automatically.</p></details>
+        <details class="faq"><summary>Can I remove line breaks but keep paragraphs separate?</summary><p>Yes — set "Join lines with" to a comma or pipe to keep visual separation between what were separate lines, or turn off "Skip empty lines" to preserve blank-line paragraph breaks.</p></details>
+        <details class="faq"><summary>Does this work with line breaks copied from Windows or Excel?</summary><p>Yes. Windows-style CRLF breaks, Unix-style LF breaks, and text pasted from spreadsheets all get normalized and removed the same way.</p></details>
+      </div>
     </div>
   </details>
 </main>
