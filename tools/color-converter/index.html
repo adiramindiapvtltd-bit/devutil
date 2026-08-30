@@ -10,7 +10,9 @@
 <meta name="theme-color" content="#eef1f6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/assets/css/style.css">
 <style>
 .swatch-big { height: 100px; border-radius: var(--r); border: 1px solid var(--line); margin-bottom: 16px; }
@@ -27,6 +29,7 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Color Converter","url":"https://devutil.adiram.net/tools/color-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online color converter. Convert colors between HEX, RGB, and HSL instantly in your browser.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Color Converter","item":"https://devutil.adiram.net/tools/color-converter/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert HEX to RGB or HSL?","acceptedAnswer":{"@type":"Answer","text":"Type or paste a HEX color into the HEX field above — the RGB and HSL fields and the color swatch update instantly. It works the other way too: edit RGB or HSL and the rest follow."}},{"@type":"Question","name":"What is a hex color calculator used for?","acceptedAnswer":{"@type":"Answer","text":"It converts a hexadecimal color code (like #4f46e5) to its RGB and HSL equivalents, which is useful when a design tool gives you one format but your CSS or code needs another."}},{"@type":"Question","name":"Can I use this to pick a CSS color value?","acceptedAnswer":{"@type":"Answer","text":"Yes — use the color picker to visually choose a color, then copy whichever format (HEX, RGB, or HSL) your CSS needs."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -59,6 +62,11 @@
     </summary>
     <div class="guide-body">
       <div class="content"><p>Use the color picker, or edit any of the HEX, RGB, or HSL fields directly — the other two and the swatch update automatically.</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>How do I convert HEX to RGB or HSL?</summary><p>Type or paste a HEX color into the HEX field above — the RGB and HSL fields and the color swatch update instantly. It works the other way too: edit RGB or HSL and the rest follow.</p></details>
+        <details class="faq"><summary>What is a hex color calculator used for?</summary><p>It converts a hexadecimal color code (like <code>#4f46e5</code>) to its RGB and HSL equivalents, which is useful when a design tool gives you one format but your CSS or code needs another.</p></details>
+        <details class="faq"><summary>Can I use this to pick a CSS color value?</summary><p>Yes — use the color picker to visually choose a color, then copy whichever format (HEX, RGB, or HSL) your CSS needs.</p></details>
+      </div>
     </div>
   </details>
 </main>

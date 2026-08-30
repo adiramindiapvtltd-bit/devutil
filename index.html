@@ -10,7 +10,9 @@
 <meta name="theme-color" content="#eef1f6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/assets/css/style.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DevUtil">
@@ -36,6 +38,8 @@
 
 <section class="hero">
   <div class="wrap">
+    <h1>Free Online Developer Tools</h1>
+    <p class="lede">53 formatters, encoders, generators, and converters that run entirely in your browser — no signup, no upload, nothing leaves your device.</p>
     <div class="search" id="searchbox">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input type="search" id="q" placeholder='Search — try "json", "regex", "csv"…' autocomplete="off" spellcheck="false" aria-label="Search tools">
@@ -48,7 +52,7 @@
 </section>
 
 <main id="main" class="wrap page">
-  <h1 id="all" class="page-title">All tools</h1>
+  <h2 id="all" class="page-title">All tools</h2>
 
   <div id="tool-cats"></div>
 

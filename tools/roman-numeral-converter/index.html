@@ -10,7 +10,9 @@
 <meta name="theme-color" content="#eef1f6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/assets/css/style.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DevUtil">
@@ -24,6 +26,7 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Roman Numeral Converter","url":"https://devutil.adiram.net/tools/roman-numeral-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online Roman numeral converter. Convert between numbers and Roman numerals instantly in your browser.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Roman Numeral Converter","item":"https://devutil.adiram.net/tools/roman-numeral-converter/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a number to Roman numerals?","acceptedAnswer":{"@type":"Answer","text":"Type the number into the Number field above and the Roman numeral appears instantly in the field below — no button click needed."}},{"@type":"Question","name":"What is the largest number I can convert to Roman numerals?","acceptedAnswer":{"@type":"Answer","text":"Standard Roman numerals go up to 3999 (MMMCMXCIX). There's no standard single-letter symbol for 4000 and above without special notation, so this converter accepts 1-3999."}},{"@type":"Question","name":"Why is \"IIII\" not accepted for the number 4?","acceptedAnswer":{"@type":"Answer","text":"This converter enforces standard subtractive notation, where 4 is written \"IV\" and 9 is written \"IX\". Repeating a numeral four times in a row (like \"IIII\") is non-standard and gets rejected."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -51,6 +54,11 @@
     </summary>
     <div class="guide-body">
       <div class="content"><p>Type a number or a Roman numeral into either field and the other updates. Roman numerals are validated strictly — non-standard forms like "IIII" for 4 are rejected in favor of the standard "IV".</p></div>
+      <div class="faqs">
+        <details class="faq"><summary>How do I convert a number to Roman numerals?</summary><p>Type the number into the Number field above and the Roman numeral appears instantly in the field below — no button click needed.</p></details>
+        <details class="faq"><summary>What is the largest number I can convert to Roman numerals?</summary><p>Standard Roman numerals go up to 3999 (MMMCMXCIX). There's no standard single-letter symbol for 4000 and above without special notation, so this converter accepts 1-3999.</p></details>
+        <details class="faq"><summary>Why is "IIII" not accepted for the number 4?</summary><p>This converter enforces standard subtractive notation, where 4 is written "IV" and 9 is written "IX". Repeating a numeral four times in a row (like "IIII") is non-standard and gets rejected.</p></details>
+      </div>
     </div>
   </details>
 </main>

@@ -10,7 +10,9 @@
 <meta name="theme-color" content="#eef1f6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/assets/css/style.css">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="DevUtil">
@@ -24,7 +26,7 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Random Number Generator","url":"https://devutil.adiram.net/tools/random-number/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online random number generator. Generate random integers in a range, with an optional no-repeats mode.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Random Number Generator","item":"https://devutil.adiram.net/tools/random-number/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this cryptographically random?","acceptedAnswer":{"@type":"Answer","text":"Yes, it uses crypto.getRandomValues() rather than Math.random(), so the results are suitable for things like fair draws, not just cosmetic randomness."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this cryptographically random?","acceptedAnswer":{"@type":"Answer","text":"Yes, it uses crypto.getRandomValues() rather than Math.random(), so the results are suitable for things like fair draws, not just cosmetic randomness."}},{"@type":"Question","name":"How do I generate a random number online?","acceptedAnswer":{"@type":"Answer","text":"Set a Min and Max above and click Generate — a random integer in that range (inclusive) appears instantly. Adjusting any field regenerates it automatically."}},{"@type":"Question","name":"Can I generate 1000 random numbers at once?","acceptedAnswer":{"@type":"Answer","text":"Yes — set \"How many?\" to any value up to 1000 and click Generate to get that many random integers in one batch, comma-separated."}},{"@type":"Question","name":"How do I generate random numbers without repeats?","acceptedAnswer":{"@type":"Answer","text":"Turn on \"No repeats\" — each number is drawn from the range at most once, useful for shuffled picks like raffle winners or random sampling."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
 <body>
@@ -81,6 +83,9 @@
       <div class="content"><p>Set a min and max (inclusive), how many numbers to draw, and click Generate. "No repeats" draws each number at most once — useful for shuffled picks like raffle winners or sampling.</p></div>
       <div class="faqs">
         <details class="faq"><summary>Is this cryptographically random?</summary><p>Yes, it uses <code>crypto.getRandomValues()</code> rather than <code>Math.random()</code>, so the results are suitable for things like fair draws, not just cosmetic randomness.</p></details>
+        <details class="faq"><summary>How do I generate a random number online?</summary><p>Set a Min and Max above and click Generate — a random integer in that range (inclusive) appears instantly. Adjusting any field regenerates it automatically.</p></details>
+        <details class="faq"><summary>Can I generate 1000 random numbers at once?</summary><p>Yes — set "How many?" to any value up to 1000 and click Generate to get that many random integers in one batch, comma-separated.</p></details>
+        <details class="faq"><summary>How do I generate random numbers without repeats?</summary><p>Turn on "No repeats" — each number is drawn from the range at most once, useful for shuffled picks like raffle winners or random sampling.</p></details>
       </div>
     </div>
   </details>
