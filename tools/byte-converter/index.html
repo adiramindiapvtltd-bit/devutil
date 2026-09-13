@@ -28,6 +28,10 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Byte Size Converter","item":"https://devutil.adiram.net/tools/byte-converter/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How many bits are in a byte?","acceptedAnswer":{"@type":"Answer","text":"There are 8 bits in a byte. Type a value into the Bits or Bytes field above and every other unit (KB, MB, GB, TB) updates automatically."}},{"@type":"Question","name":"What's the difference between KB and KiB (1000 vs 1024)?","acceptedAnswer":{"@type":"Answer","text":"1024-based units (KiB, MiB, GiB) match how operating systems typically report file sizes, using powers of 1024. 1000-based units (KB, MB, GB) match how storage manufacturers advertise capacity, using powers of 1000. Switch between them with the toggle above."}},{"@type":"Question","name":"How do I convert bytes to KB or MB?","acceptedAnswer":{"@type":"Answer","text":"Enter the byte value into the Bytes field — the KB, MB, GB, and TB fields update instantly using whichever base (1000 or 1024) you've selected."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 <body>
 <noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
@@ -68,10 +72,12 @@
       </div>
     </div>
   </details>
+  <div class="related" data-slug="byte-converter"></div>
 </main>
 
 <div id="site-footer"></div>
 <script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/related-tools.js"></script>
 <script src="/assets/js/chrome.js"></script>
 <script>
 var fields = { bits: document.getElementById('bits'), bytes: document.getElementById('bytes'), kb: document.getElementById('kb'), mb: document.getElementById('mb'), gb: document.getElementById('gb'), tb: document.getElementById('tb') };

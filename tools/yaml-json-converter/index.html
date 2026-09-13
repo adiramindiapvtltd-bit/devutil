@@ -26,8 +26,12 @@
 <meta name="twitter:image" content="https://devutil.adiram.net/og-image.svg">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"YAML ↔ JSON Converter","url":"https://devutil.adiram.net/tools/yaml-json-converter/","applicationCategory":"DeveloperApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","description":"Free online YAML to JSON and JSON to YAML converter. Convert between YAML and JSON in either direction.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Adiram","url":"https://adiram.net"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"YAML ↔ JSON Converter","item":"https://devutil.adiram.net/tools/yaml-json-converter/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my data uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Conversion happens locally using the js-yaml library, loaded once from a CDN."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert YAML to JSON online for free?","acceptedAnswer":{"@type":"Answer","text":"Paste your YAML into the box above with the YAML → JSON tab selected — the JSON output appears instantly below, ready to copy. It's free with no signup or upload."}},{"@type":"Question","name":"Can I convert JSON back to YAML?","acceptedAnswer":{"@type":"Answer","text":"Yes — click the JSON → YAML tab, paste JSON, and the equivalent YAML appears immediately."}},{"@type":"Question","name":"What's the difference between YAML and JSON?","acceptedAnswer":{"@type":"Answer","text":"JSON uses braces and brackets and is easy for machines and APIs to parse. YAML uses indentation and is easier for humans to read and hand-edit, commonly used in config files like Docker Compose and Kubernetes manifests. Both represent the same data — this tool converts between them without losing structure."}},{"@type":"Question","name":"Does this handle nested objects and arrays?","acceptedAnswer":{"@type":"Answer","text":"Yes, nested maps, lists, strings, numbers, and booleans all convert correctly in both directions."}},{"@type":"Question","name":"Is my data uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Conversion happens locally in your browser using the js-yaml library, loaded once from a CDN — your YAML or JSON never leaves your device."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 <body>
 <noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
@@ -73,16 +77,22 @@
       How this works &amp; FAQ
     </summary>
     <div class="guide-body">
-      <div class="content"><p>Switch direction with the tabs, paste your source, and click Convert.</p></div>
+      <div class="content"><p>Switch direction with the tabs, paste your YAML or JSON, and the converted output updates as you type — no Convert button needed. Nested objects, arrays, strings, numbers, and booleans all round-trip correctly in either direction.</p></div>
       <div class="faqs">
-        <details class="faq"><summary>Is my data uploaded anywhere?</summary><p>No. Conversion happens locally using the js-yaml library, loaded once from a CDN.</p></details>
+        <details class="faq"><summary>How do I convert YAML to JSON online for free?</summary><p>Paste your YAML into the box above with the YAML &rarr; JSON tab selected &mdash; the JSON output appears instantly below, ready to copy. It's free with no signup or upload.</p></details>
+        <details class="faq"><summary>Can I convert JSON back to YAML?</summary><p>Yes &mdash; click the JSON &rarr; YAML tab, paste JSON, and the equivalent YAML appears immediately.</p></details>
+        <details class="faq"><summary>What's the difference between YAML and JSON?</summary><p>JSON uses braces and brackets and is easy for machines and APIs to parse. YAML uses indentation and is easier for humans to read and hand-edit, commonly used in config files like Docker Compose and Kubernetes manifests. Both represent the same data &mdash; this tool converts between them without losing structure.</p></details>
+        <details class="faq"><summary>Does this handle nested objects and arrays?</summary><p>Yes, nested maps, lists, strings, numbers, and booleans all convert correctly in both directions.</p></details>
+        <details class="faq"><summary>Is my data uploaded anywhere?</summary><p>No. Conversion happens locally in your browser using the js-yaml library, loaded once from a CDN &mdash; your YAML or JSON never leaves your device.</p></details>
       </div>
     </div>
   </details>
+  <div class="related" data-slug="yaml-json-converter"></div>
 </main>
 
 <div id="site-footer"></div>
 <script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/related-tools.js"></script>
 <script src="/assets/js/chrome.js"></script>
 <script src="/assets/js/copy.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>

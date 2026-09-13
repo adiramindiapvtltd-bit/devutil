@@ -28,6 +28,10 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"All tools","item":"https://devutil.adiram.net/"},{"@type":"ListItem","position":2,"name":"Random Number Generator","item":"https://devutil.adiram.net/tools/random-number/"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this cryptographically random?","acceptedAnswer":{"@type":"Answer","text":"Yes, it uses crypto.getRandomValues() rather than Math.random(), so the results are suitable for things like fair draws, not just cosmetic randomness."}},{"@type":"Question","name":"How do I generate a random number online?","acceptedAnswer":{"@type":"Answer","text":"Set a Min and Max above and click Generate — a random integer in that range (inclusive) appears instantly. Adjusting any field regenerates it automatically."}},{"@type":"Question","name":"Can I generate 1000 random numbers at once?","acceptedAnswer":{"@type":"Answer","text":"Yes — set \"How many?\" to any value up to 1000 and click Generate to get that many random integers in one batch, comma-separated."}},{"@type":"Question","name":"How do I generate random numbers without repeats?","acceptedAnswer":{"@type":"Answer","text":"Turn on \"No repeats\" — each number is drawn from the range at most once, useful for shuffled picks like raffle winners or random sampling."}}]}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 </head>
 <body>
 <noscript><div class="noscript">This tool runs in your browser — please enable JavaScript to use it.</div></noscript>
@@ -89,10 +93,12 @@
       </div>
     </div>
   </details>
+  <div class="related" data-slug="random-number"></div>
 </main>
 
 <div id="site-footer"></div>
 <script src="/assets/js/tools-data.js"></script>
+<script src="/assets/js/related-tools.js"></script>
 <script src="/assets/js/chrome.js"></script>
 <script src="/assets/js/copy.js"></script>
 <script>
